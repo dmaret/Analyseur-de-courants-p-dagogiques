@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyseur de Courants Pédagogiques - MSP ARPIH</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            color: #667eea;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title::before {
+            content: "📋";
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .questions {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .question-block {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .question-block h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-button {
+            padding: 12px 20px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            font-size: 1em;
+        }
+
+        .option-button:hover {
+            background: #f0f0f0;
+            border-color: #667eea;
+        }
+
+        .option-button.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 20px;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results {
+            display: none;
+            margin-top: 40px;
+        }
+
+        .results-title {
+            font-size: 2em;
+            color: #667eea;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .courant-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .courant-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .courant-name {
+            font-size: 1.5em;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .courant-score {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .courant-description {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .indicators {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .indicators h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .indicators ul {
+            padding-left: 20px;
+        }
+
+        .indicators li {
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .theoriciens {
+            background: #fff8e6;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .theoriciens h4 {
+            color: #d97706;
+            margin-bottom: 10px;
+        }
+
+        .references {
+            background: #e6f3ff;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 0.9em;
+        }
+
+        .references h4 {
+            color: #2563eb;
+            margin-bottom: 10px;
+        }
+
+        .references p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 5px;
+        }
+
+        .btn-reset {
+            background: #6c757d;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+
+        .btn-reset:hover {
+            background: #5a6268;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .courant-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 Analyseur de Courants Pédagogiques</h1>
+            <p>Outil d'analyse pour les situations d'accompagnement à La Pallanterie - Formation MSP ARPIH</p>
+        </div>
+
+        <div class="content">
+            <div id="step1" class="section">
+                <h2 class="section-title">Décrivez votre situation</h2>
+                <textarea id="situationDescription" placeholder="Décrivez une situation d'accompagnement vécue à La Pallanterie (atelier conditioning-logistique). Par exemple : interactions avec un bénéficiaire CEA, méthode utilisée, objectifs visés, résultats observés..."></textarea>
+                <button class="btn-primary" onclick="analyzerInitial()">Analyser la situation</button>
+            </div>
+
+            <div id="questions" class="questions section">
+                <h2 class="section-title">Questions de précision</h2>
+                <p style="color: #666; margin-bottom: 20px;">Pour affiner l'analyse, répondez à ces questions sur votre situation :</p>
+                
+                <div id="questionsContainer"></div>
+                
+                <button class="btn-primary" onclick="generateResults()">Voir les résultats d'analyse</button>
+            </div>
+
+            <div id="results" class="results">
+                <h2 class="results-title">📊 Analyse des Courants Pédagogiques Identifiés</h2>
+                <div id="resultsContainer"></div>
+                <button class="btn-reset" onclick="reset()">Nouvelle analyse</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Base de données des courants pédagogiques avec sources académiques vérifiées
+        const courants = {
+            transmissif: {
+                name: "Pédagogie Transmissive / Magistrale",
+                description: "Le professionnel détient le savoir et le transmet de manière structurée au bénéficiaire. L'apprentissage repose sur l'explication, la démonstration et la reproduction. L'erreur est vue comme un raté à corriger.",
+                theoriciens: ["Méthode traditionnelle d'enseignement"],
+                indicators: [
+                    "Vous expliquez étape par étape comment faire",
+                    "Vous montrez puis demandez de reproduire",
+                    "Vous êtes la source principale du savoir",
+                    "L'accent est mis sur la transmission d'un savoir-faire précis",
+                    "Le bénéficiaire écoute puis exécute selon vos indications",
+                    "L'erreur est corrigée immédiatement"
+                ],
+                references: [
+                    "Blain-Joguet, E. (2012). Au cœur de l'erreur. Actualités en analyse transactionnelle, 141(1), 71-73. https://shs.cairn.info/",
+                    "Goupil, G. et al. (2016). Des théories de l'apprentissage à l'enseignement. Éduquer et Former, Éditions Sciences Humaines, p.78-84. https://shs.cairn.info/"
+                ]
+            },
+            behaviorisme: {
+                name: "Béhaviorisme",
+                description: "L'apprentissage se fait par conditionnement : association stimulus-réponse, renforcement positif (récompenses, encouragements) ou négatif. Focus sur les comportements observables et la répétition pour créer des automatismes.",
+                theoriciens: ["John B. Watson (fondateur, 1913)", "B.F. Skinner (conditionnement opérant)", "Ivan Pavlov (conditionnement classique)"],
+                indicators: [
+                    "Vous utilisez des encouragements ou félicitations pour motiver",
+                    "Vous décomposez la tâche en petites étapes simples",
+                    "Vous cherchez à modifier un comportement précis et observable",
+                    "Vous répétez jusqu'à ce que le geste devienne automatique",
+                    "Vous utilisez des récompenses ou sanctions pour renforcer",
+                    "L'erreur est vue comme une mauvaise réponse à éliminer"
+                ],
+                references: [
+                    "Lemay, M. (2014). L'approche béhavioriste et son modèle d'apprentissage social. Forces et souffrances psychiques de l'enfant, érès, p.265-274. https://shs.cairn.info/",
+                    "Richelle, M. (1993). Le behaviorisme aujourd'hui. Du nouveau sur l'esprit?, PUF, p.51-84. https://shs.cairn.info/",
+                    "Mariné, C. et Escribe, C. (2012). Naissance du behaviorisme. Histoire de la psychologie, Éditions Sciences Humaines, p.75-77. https://shs.cairn.info/",
+                    "Huteau, M. (2007). Apprentissage (développement de compétences nouvelles). Orientation et insertion professionnelle, Dunod, p.45-48. https://shs.cairn.info/"
+                ]
+            },
+            cognitivisme_tcc: {
+                name: "Cognitivo-Comportemental (TCC)",
+                description: "Combine l'analyse des processus mentaux (pensées, croyances, représentations) avec la modification des comportements. Focus sur la résolution de problèmes, les stratégies cognitives et le traitement de l'information.",
+                theoriciens: ["Aaron Beck", "Albert Ellis", "Albert Bandura (apprentissage social)"],
+                indicators: [
+                    "Vous aidez le bénéficiaire à identifier ses pensées face à une difficulté",
+                    "Vous travaillez sur la gestion des émotions lors de l'apprentissage",
+                    "Vous cherchez à modifier des croyances limitantes ('je ne suis pas capable')",
+                    "Vous utilisez la résolution de problème de manière structurée",
+                    "Vous combinez travail sur les pensées et sur les actions concrètes",
+                    "Vous analysez comment la personne traite l'information"
+                ],
+                references: [
+                    "Goupil, G. et al. (2016). Des théories de l'apprentissage à l'enseignement. Éduquer et Former, Éditions Sciences Humaines, p.78-84. https://shs.cairn.info/",
+                    "Carré, P. (2019). Psychopédagogie des adultes. Psychologies pour la formation, Dunod. https://shs.cairn.info/"
+                ]
+            },
+            humaniste: {
+                name: "Approche Humaniste (Rogers)",
+                description: "Centré sur la personne, ses besoins et son potentiel d'actualisation. Le professionnel crée un climat de confiance, d'écoute empathique et d'acceptation inconditionnelle pour faciliter le développement autonome du bénéficiaire. La pédagogie est non-directive.",
+                theoriciens: [
+                    "Carl Rogers (1902-1987) - Approche Centrée sur la Personne (ACP)",
+                    "Abraham Maslow (pyramide des besoins)",
+                    "Concepts clés : empathie, congruence, considération positive inconditionnelle"
+                ],
+                indicators: [
+                    "Vous créez une relation de confiance et d'acceptation",
+                    "Vous écoutez le vécu et les ressentis du bénéficiaire",
+                    "Vous manifestez de l'empathie et du respect inconditionnel",
+                    "Vous croyez en la capacité du bénéficiaire à trouver ses propres solutions",
+                    "Vous adoptez une posture non-directive et facilitatrice",
+                    "Le bénéficiaire est au centre, vous l'accompagnez dans son cheminement",
+                    "L'erreur est source d'apprentissage et de croissance personnelle"
+                ],
+                references: [
+                    "Lipiansky, E.-M. (2019). Carl Rogers et la psychologie humaniste. Psychologies pour la formation, Dunod, p.87-104. https://shs.cairn.info/",
+                    "Marc, E. (2024). Carl Rogers. Une approche humaniste de la personne. Les grands auteurs en psychologie et le management, EMS Éditions, p.135-152. https://shs.cairn.info/",
+                    "Vaillé, H. (2020). Carl Rogers (1902-1987) : Le Développement de la personne. Bibliothèque idéale de psychologie, p.164-165. https://shs.cairn.info/",
+                    "Rogers, C. R. (2001). L'approche centrée sur la personne. Anthologie de textes, Le Touvet, Ambre"
+                ]
+            },
+            systemique: {
+                name: "Approche Systémique (École de Palo Alto)",
+                description: "Analyse les interactions et la communication dans le système relationnel global (bénéficiaire, équipe, environnement, institution). Focus sur les patterns interactionnels, les boucles de rétroaction, la circularité et le contexte. On ne peut pas ne pas communiquer.",
+                theoriciens: [
+                    "Gregory Bateson (1904-1980) - Fondateur, anthropologue",
+                    "Paul Watzlawick (1921-2007) - Une logique de la communication (1967)",
+                    "Don Jackson - Mental Research Institute (MRI)",
+                    "Jay Haley",
+                    "Virginia Satir - Thérapie familiale",
+                    "John Weakland",
+                    "William Fry",
+                    "Cybernétique et théorie des systèmes"
+                ],
+                indicators: [
+                    "Vous analysez la dynamique relationnelle (comment les personnes interagissent)",
+                    "Vous observez les patterns de communication (qui parle à qui, comment)",
+                    "Vous travaillez sur les boucles relationnelles (action-réaction-action)",
+                    "Vous considérez le contexte et l'environnement global",
+                    "Vous intervenez sur les interactions plutôt que sur l'individu seul",
+                    "Vous êtes attentif à la communication non-verbale et aux paradoxes",
+                    "Vous utilisez des recadrages ou interventions paradoxales",
+                    "Vous pensez en termes de causalité circulaire plutôt que linéaire"
+                ],
+                references: [
+                    "Picard, D., Marc, E. (2015). L'école de Palo Alto, PUF. https://shs.cairn.info/",
+                    "Wittezaele, J.-J. et Garcia, T. (2012). Palo Alto ou les paradoxes de la communication. Histoire de la psychologie, p.121-130. https://shs.cairn.info/",
+                    "Molénat, X. (2020). Paul Watzlawick (1921-2007). Bibliothèque idéale de psychologie, p.197-198. https://shs.cairn.info/",
+                    "Watzlawick, P., Helmick-Beavin, J., Jackson, D. (1972). Une logique de la communication, Seuil (original : Pragmatics of Human Communication, 1967)",
+                    "Bateson, G., Ruesch, J. (1988). Communication et Société, Seuil"
+                ]
+            },
+            socioconstructivisme: {
+                name: "Socioconstructivisme",
+                description: "L'apprentissage se construit par l'interaction sociale et la coopération. Le bénéficiaire construit activement ses connaissances avec l'aide d'autrui (médiation sociale). Zone proximale de développement : écart entre ce que la personne peut faire seule et avec aide. Le conflit socio-cognitif est source de progrès.",
+                theoriciens: [
+                    "Lev Vygotski (1896-1934) - Psychologue russe",
+                    "Jean Piaget (1896-1980) - Constructivisme, épistémologie génétique",
+                    "Henri Wallon (1879-1962)",
+                    "Jerome Bruner - Étayage (scaffolding)",
+                    "Concepts clés : Zone Proximale de Développement (ZPD), médiation, interpsychique → intrapsychique"
+                ],
+                indicators: [
+                    "Vous favorisez les échanges entre bénéficiaires",
+                    "Vous créez des situations de travail collaboratif",
+                    "Vous utilisez les interactions sociales comme moteur d'apprentissage",
+                    "Vous vous situez dans la 'zone proximale' (ni trop facile, ni trop difficile)",
+                    "Vous encouragez la confrontation constructive des points de vue",
+                    "Le conflit cognitif entre pairs est source d'apprentissage",
+                    "L'apprentissage se fait d'abord socialement puis individuellement"
+                ],
+                references: [
+                    "Garnier, C., Bednarz, N. et Ulanovskaya, I. (2009). Après Vygotski et Piaget : Perspectives sociale et constructiviste. De Boeck Supérieur. https://shs.cairn.info/",
+                    "Bourgeois, É. (2019). Jean Piaget et le paradigme constructiviste de l'apprentissage. Psychologies pour la formation, Dunod, p.71-86. https://shs.cairn.info/",
+                    "Grangeat, M. (2016). Lev S. Vygotski : l'apprentissage par le groupe. Éduquer et Former, p.134-141. https://shs.cairn.info/",
+                    "Schneuwly, B. et Bronckart, J.-P. (1985). Vygotsky aujourd'hui, Delachaux et Niestlé"
+                ]
+            },
+            competences: {
+                name: "Pédagogie par Compétences / Objectifs",
+                description: "L'apprentissage vise le développement de compétences professionnelles mobilisables en situation réelle de travail. Approche pragmatique centrée sur l'action, le 'savoir-agir' et le transfert des acquis dans différents contextes. Évaluation basée sur la capacité à mobiliser des ressources.",
+                theoriciens: [
+                    "Philippe Perrenoud (compétences)",
+                    "Guy Le Boterf (ingénierie des compétences)",
+                    "Pédagogie par objectifs (PPO)",
+                    "Référentiels de compétences professionnelles"
+                ],
+                indicators: [
+                    "Vous définissez des objectifs en termes de compétences à acquérir",
+                    "Vous créez des situations proches de la réalité professionnelle",
+                    "Vous travaillez sur le 'savoir-agir' en situation",
+                    "Vous évaluez la capacité à mobiliser des ressources (savoirs, savoir-faire, savoir-être)",
+                    "Vous favorisez le transfert des apprentissages vers d'autres contextes",
+                    "Vous vous référez à un référentiel de compétences"
+                ],
+                references: [
+                    "Carré, P. (2019). Psychopédagogie des adultes. Psychologies pour la formation, Dunod. https://shs.cairn.info/",
+                    "Perrenoud, P. (1991). Pour une approche pragmatique de l'évaluation formative. Mesure et évaluation, vol. 13, n° 4",
+                    "Développée dans les référentiels de formation professionnelle"
+                ]
+            }
+        };
+
+        // Questions de précision
+        const questions = [
+            {
+                id: "posture",
+                question: "Quelle posture avez-vous adoptée principalement ?",
+                options: [
+                    { text: "Expert qui transmet son savoir", courants: ["transmissif"], weight: 3 },
+                    { text: "Facilitateur qui accompagne sans diriger", courants: ["humaniste"], weight: 3 },
+                    { text: "Observateur et analyste des interactions", courants: ["systemique"], weight: 3 },
+                    { text: "Guide qui structure l'apprentissage progressif", courants: ["behaviorisme", "competences"], weight: 2 },
+                    { text: "Médiateur entre pairs qui apprennent ensemble", courants: ["socioconstructivisme"], weight: 3 }
+                ]
+            },
+            {
+                id: "objectif",
+                question: "Quel était l'objectif principal de la situation ?",
+                options: [
+                    { text: "Transmettre un savoir-faire technique précis", courants: ["transmissif"], weight: 3 },
+                    { text: "Développer l'autonomie et la confiance en soi", courants: ["humaniste"], weight: 3 },
+                    { text: "Modifier un comportement spécifique observable", courants: ["behaviorisme"], weight: 3 },
+                    { text: "Améliorer les interactions et la communication dans l'équipe", courants: ["systemique"], weight: 3 },
+                    { text: "Construire des apprentissages par l'échange entre pairs", courants: ["socioconstructivisme"], weight: 3 },
+                    { text: "Développer une compétence mobilisable en situation", courants: ["competences"], weight: 3 }
+                ]
+            },
+            {
+                id: "methode",
+                question: "Quelle méthode avez-vous principalement utilisée ?",
+                options: [
+                    { text: "Démonstration puis imitation et reproduction", courants: ["transmissif", "behaviorisme"], weight: 2 },
+                    { text: "Écoute active, questionnement non-directif", courants: ["humaniste"], weight: 3 },
+                    { text: "Exercices répétés avec renforcement positif", courants: ["behaviorisme"], weight: 3 },
+                    { text: "Travail en groupe, échanges et confrontation d'idées", courants: ["socioconstructivisme"], weight: 3 },
+                    { text: "Analyse des interactions et recadrage de la communication", courants: ["systemique"], weight: 3 },
+                    { text: "Mise en situation réelle proche du contexte professionnel", courants: ["competences"], weight: 3 }
+                ]
+            },
+            {
+                id: "relation",
+                question: "Comment caractériseriez-vous la relation établie ?",
+                options: [
+                    { text: "Relation verticale expert-apprenant (je sais, tu apprends)", courants: ["transmissif"], weight: 2 },
+                    { text: "Relation horizontale de confiance et d'écoute", courants: ["humaniste"], weight: 3 },
+                    { text: "Focus sur le système relationnel et les interactions globales", courants: ["systemique"], weight: 3 },
+                    { text: "Relation de collaboration entre pairs qui co-construisent", courants: ["socioconstructivisme"], weight: 3 },
+                    { text: "Relation de guidance avec feedbacks réguliers", courants: ["behaviorisme", "competences"], weight: 2 }
+                ]
+            },
+            {
+                id: "erreur",
+                question: "Comment avez-vous abordé les erreurs ?",
+                options: [
+                    { text: "Correction immédiate pour éviter les mauvaises habitudes", courants: ["transmissif", "behaviorisme"], weight: 2 },
+                    { text: "Erreur comme source précieuse d'apprentissage et de réflexion", courants: ["humaniste", "socioconstructivisme"], weight: 2 },
+                    { text: "Analyse des patterns interactionnels qui mènent à l'erreur", courants: ["systemique"], weight: 3 },
+                    { text: "Ajustement dans l'action pour développer la compétence", courants: ["competences"], weight: 2 },
+                    { text: "Restructuration cognitive des croyances autour de l'erreur", courants: ["cognitivisme_tcc"], weight: 3 }
+                ]
+            },
+            {
+                id: "communication",
+                question: "Quel aspect de la communication était important ?",
+                options: [
+                    { text: "Clarté des consignes verbales données", courants: ["transmissif"], weight: 2 },
+                    { text: "Écoute empathique et expression des ressentis", courants: ["humaniste"], weight: 3 },
+                    { text: "Observation des patterns de communication et boucles relationnelles", courants: ["systemique"], weight: 3 },
+                    { text: "Échanges verbaux entre bénéficiaires pour co-construire", courants: ["socioconstructivisme"], weight: 3 },
+                    { text: "Feedbacks précis sur les comportements", courants: ["behaviorisme"], weight: 2 }
+                ]
+            }
+        ];
+
+        let situationText = "";
+        let answers = {};
+
+        function analyzerInitial() {
+            situationText = document.getElementById('situationDescription').value.trim();
+            
+            if (!situationText) {
+                alert("Merci de décrire votre situation avant de continuer.");
+                return;
+            }
+
+            if (situationText.length < 50) {
+                alert("Votre description semble un peu courte. Pour une analyse plus précise, essayez de donner plus de détails sur la situation.");
+                return;
+            }
+
+            document.getElementById('step1').style.display = 'none';
+            document.getElementById('questions').style.display = 'block';
+            
+            renderQuestions();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function analyzeKeywords(text) {
+            const keywords = {
+                transmissif: ['montrer', 'expliquer', 'démonstration', 'enseigner', 'transmettre', 'apprendre à', 'corriger'],
+                behaviorisme: ['répéter', 'répétition', 'encourager', 'féliciter', 'récompense', 'comportement', 'automatisme', 'renforcer', 'conditionner'],
+                cognitivisme_tcc: ['penser', 'pensée', 'croyance', 'émotion', 'stratégie', 'résolution', 'cognitive'],
+                humaniste: ['écouter', 'écoute', 'confiance', 'autonomie', 'ressenti', 'empathie', 'accompagner', 'respecter', 'accepter', 'bienveillance'],
+                systemique: ['interaction', 'communica', 'relation', 'équipe', 'dynamique', 'contexte', 'environnement', 'système', 'circulaire', 'pattern'],
+                socioconstructivisme: ['groupe', 'collaboration', 'échange', 'collectif', 'pairs', 'ensemble', 'coopération', 'débat', 'confrontation'],
+                competences: ['compétence', 'situation réelle', 'action', 'professionnel', 'pratique', 'transfert', 'mobiliser']
+            };
+            
+            const scores = {};
+            
+            for (const [courant, words] of Object.entries(keywords)) {
+                scores[courant] = words.filter(word => text.includes(word)).length;
+            }
+            
+            return scores;
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+            
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question-block';
+                questionDiv.innerHTML = `
+                    <h3>${index + 1}. ${q.question}</h3>
+                    <div class="options" id="options-${q.id}"></div>
+                `;
+                container.appendChild(questionDiv);
+                
+                const optionsDiv = document.getElementById(`options-${q.id}`);
+                q.options.forEach((option, optIndex) => {
+                    const button = document.createElement('button');
+                    button.className = 'option-button';
+                    button.textContent = option.text;
+                    button.onclick = () => selectOption(q.id, optIndex, button);
+                    optionsDiv.appendChild(button);
+                });
+            });
+        }
+
+        function selectOption(questionId, optionIndex, button) {
+            const optionsDiv = button.parentElement;
+            Array.from(optionsDiv.children).forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            
+            button.classList.add('selected');
+            
+            const question = questions.find(q => q.id === questionId);
+            answers[questionId] = question.options[optionIndex];
+        }
+
+        function generateResults() {
+            if (Object.keys(answers).length < questions.length) {
+                alert("Merci de répondre à toutes les questions avant de continuer.");
+                return;
+            }
+
+            const scores = {};
+            
+            for (const courantKey in courants) {
+                scores[courantKey] = 0;
+            }
+
+            const keywordScores = analyzeKeywords(situationText.toLowerCase());
+            for (const [courant, score] of Object.entries(keywordScores)) {
+                scores[courant] += score;
+            }
+
+            for (const answer of Object.values(answers)) {
+                for (const courant of answer.courants) {
+                    scores[courant] += answer.weight;
+                }
+            }
+
+            const sortedCourants = Object.entries(scores)
+                .filter(([_, score]) => score > 0)
+                .sort((a, b) => b[1] - a[1])
+                .map(([courantKey, score]) => ({
+                    key: courantKey,
+                    score: score,
+                    data: courants[courantKey]
+                }));
+
+            displayResults(sortedCourants);
+        }
+
+        function displayResults(sortedCourants) {
+            document.getElementById('questions').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+
+            const container = document.getElementById('resultsContainer');
+            container.innerHTML = '';
+
+            if (sortedCourants.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:#666;">Aucun courant identifié. Essayez de fournir plus de détails dans votre description.</p>';
+                return;
+            }
+
+            const maxScore = sortedCourants[0].score;
+            
+            sortedCourants.forEach((courant, index) => {
+                const card = document.createElement('div');
+                card.className = 'courant-card';
+                
+                let intensite = '';
+                const scorePercent = (courant.score / maxScore * 100);
+                
+                if (scorePercent >= 80) {
+                    intensite = '🔥 Dominant';
+                } else if (scorePercent >= 50) {
+                    intensite = '⭐ Présent';
+                } else {
+                    intensite = '💫 Identifié';
+                }
+
+                const indicatorsHTML = `
+                    <div class="indicators">
+                        <h4>📌 Indicateurs dans votre pratique :</h4>
+                        <ul>
+                            ${courant.data.indicators.map(ind => `<li>${ind}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+
+                const theoriciensHTML = courant.data.theoriciens.length > 0 ? `
+                    <div class="theoriciens">
+                        <h4>👤 Théoriciens / Références :</h4>
+                        <p>${courant.data.theoriciens.join(' • ')}</p>
+                    </div>
+                ` : '';
+
+                const referencesHTML = courant.data.references.length > 0 ? `
+                    <div class="references">
+                        <h4>📚 Références académiques vérifiées (Cairn.info, sources HES-SO) :</h4>
+                        ${courant.data.references.map(ref => `<p>• ${ref}</p>`).join('')}
+                    </div>
+                ` : '';
+
+                card.innerHTML = `
+                    <div class="courant-header">
+                        <div class="courant-name">${courant.data.name}</div>
+                        <div class="courant-score">${intensite}</div>
+                    </div>
+                    <div class="courant-description">
+                        ${courant.data.description}
+                    </div>
+                    ${indicatorsHTML}
+                    ${theoriciensHTML}
+                    ${referencesHTML}
+                    <div style="margin-top: 20px; padding-top: 15px; border-top: 2px solid #e0e0e0; color: #667eea; font-weight: bold;">
+                        💡 Pourquoi ce courant a été identifié : Vos réponses et votre description correspondent à ${courant.score} indicateurs de ce courant pédagogique.
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function reset() {
+            document.getElementById('situationDescription').value = '';
+            situationText = "";
+            answers = {};
+            
+            document.getElementById('step1').style.display = 'block';
+            document.getElementById('questions').style.display = 'none';
+            document.getElementById('results').style.display = 'none';
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
