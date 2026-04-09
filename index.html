@@ -1014,8 +1014,10 @@
                 container.appendChild(card);
             });
 
-            // Radar chart
-            drawRadarChart(sortedCourants);
+            // Radar chart — deferred to next frame so the DOM is laid out
+            requestAnimationFrame(() => {
+                try { drawRadarChart(sortedCourants); } catch(e) { console.warn('Radar chart:', e); }
+            });
 
             // Save to localStorage
             saveToLocalStorage(sortedCourants);
@@ -1189,8 +1191,9 @@
             sortedCourants.forEach(c => { scoreMap[c.key] = c.score; });
             const maxScore = Math.max(...sortedCourants.map(c => c.score), 1);
 
-            // Responsive canvas size
-            const size = Math.min(500, canvas.parentElement.clientWidth - 40);
+            // Responsive canvas size (fallback to 460 if layout not ready)
+            const parentW = canvas.parentElement ? canvas.parentElement.clientWidth : 0;
+            const size = Math.max(300, Math.min(500, parentW > 100 ? parentW - 40 : 460));
             canvas.width  = size;
             canvas.height = Math.round(size * 0.82);
 
