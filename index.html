@@ -270,6 +270,244 @@
             background: #5a6268;
         }
 
+        /* Synthesis Section */
+        .synthesis-section {
+            background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+            border: 2px solid #667eea;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 35px;
+        }
+
+        .synthesis-section-title {
+            font-size: 1.4em;
+            color: #667eea;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 12px;
+        }
+
+        .synthesis-subtitle {
+            color: #667eea;
+            margin: 22px 0 12px;
+            font-size: 1.05em;
+        }
+
+        .synthesis-paragraphs {
+            margin-bottom: 10px;
+        }
+
+        .synthesis-paragraph {
+            color: #444;
+            line-height: 1.9;
+            margin-bottom: 12px;
+            text-align: justify;
+            padding: 14px 18px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .synthesis-table-container {
+            overflow-x: auto;
+            margin-top: 10px;
+        }
+
+        .synthesis-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            font-size: 0.9em;
+        }
+
+        .synthesis-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 14px;
+            text-align: left;
+        }
+
+        .synthesis-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid #e8e8f0;
+            color: #555;
+            vertical-align: top;
+        }
+
+        .synthesis-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .synthesis-table tr:nth-child(even) td {
+            background: #f8f9ff;
+        }
+
+        .synthesis-table tr:hover td {
+            background: #f0f4ff;
+        }
+
+        .intensite-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .intensite-dominant { background: #ffe4e4; color: #c53030; }
+        .intensite-present  { background: #fff3cd; color: #b7791f; }
+        .intensite-identifie{ background: #dbeafe; color: #1d4ed8; }
+
+        .score-bar-container {
+            background: #e0e0f0;
+            border-radius: 10px;
+            height: 8px;
+            width: 90px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .score-bar-fill {
+            height: 100%;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        /* Progress indicator */
+        .progress-bar-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            background: #f0f4ff;
+            padding: 12px 18px;
+            border-radius: 10px;
+        }
+
+        .progress-bar-track {
+            flex: 1;
+            background: #d0d8ff;
+            border-radius: 10px;
+            height: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-inner {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            transition: width 0.4s ease;
+            width: 0%;
+        }
+
+        .progress-label {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 0.95em;
+            white-space: nowrap;
+            min-width: 160px;
+            text-align: right;
+        }
+
+        /* Radar chart */
+        .radar-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px 0 30px;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid #e8e8f0;
+        }
+
+        .radar-title {
+            color: #667eea;
+            font-size: 1.05em;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        /* Restore banner */
+        .restore-banner {
+            background: linear-gradient(135deg, #e0f7fa 0%, #e8f5e9 100%);
+            border: 2px solid #26a69a;
+            border-radius: 12px;
+            padding: 14px 20px;
+            margin-bottom: 20px;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .restore-banner p { color: #00695c; font-size: 0.95em; margin: 0; }
+
+        .restore-banner-btns { display: flex; gap: 10px; }
+
+        .btn-restore {
+            background: #26a69a;
+            color: white;
+            padding: 8px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background 0.2s;
+        }
+        .btn-restore:hover { background: #00897b; }
+
+        .btn-dismiss {
+            background: transparent;
+            color: #26a69a;
+            padding: 8px 14px;
+            border: 1px solid #26a69a;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.2s;
+        }
+        .btn-dismiss:hover { background: #e0f7fa; }
+
+        /* Print button */
+        .btn-print {
+            background: #38a169;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+            margin-left: 10px;
+        }
+        .btn-print:hover { background: #2f855a; }
+
+        /* Print styles */
+        @media print {
+            body { background: white !important; padding: 0 !important; }
+            .container { box-shadow: none !important; border-radius: 0 !important; max-width: 100% !important; }
+            .header {
+                background: #667eea !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .btn-reset, .btn-print, .restore-banner, .progress-bar-wrapper { display: none !important; }
+            .courant-card { break-inside: avoid; page-break-inside: avoid; }
+            .synthesis-section { break-inside: avoid; page-break-inside: avoid; }
+            .radar-container { break-inside: avoid; page-break-inside: avoid; }
+        }
+
         @media (max-width: 768px) {
             .content {
                 padding: 20px;
@@ -295,6 +533,15 @@
         </div>
 
         <div class="content">
+            <!-- Restore banner (shown if a previous analysis exists in localStorage) -->
+            <div id="restoreBanner" class="restore-banner">
+                <p>💾 Une analyse précédente a été retrouvée (<span id="restoreDate"></span>). Souhaitez-vous la restaurer ?</p>
+                <div class="restore-banner-btns">
+                    <button class="btn-restore" onclick="restoreLastAnalysis()">Restaurer</button>
+                    <button class="btn-dismiss" onclick="dismissRestoreBanner()">Ignorer</button>
+                </div>
+            </div>
+
             <div id="step1" class="section">
                 <h2 class="section-title">Décrivez votre situation</h2>
                 <textarea id="situationDescription" placeholder="Décrivez une situation d'accompagnement vécue à La Pallanterie (atelier conditioning-logistique). Par exemple : interactions avec un bénéficiaire CEA, méthode utilisée, objectifs visés, résultats observés..."></textarea>
@@ -303,8 +550,16 @@
 
             <div id="questions" class="questions section">
                 <h2 class="section-title">Questions de précision</h2>
-                <p style="color: #666; margin-bottom: 20px;">Pour affiner l'analyse, répondez à ces questions sur votre situation :</p>
-                
+                <p style="color: #666; margin-bottom: 15px;">Pour affiner l'analyse, répondez à ces questions sur votre situation :</p>
+
+                <div class="progress-bar-wrapper">
+                    <span style="font-size:1.2em;">📋</span>
+                    <div class="progress-bar-track">
+                        <div class="progress-bar-inner" id="progressInner"></div>
+                    </div>
+                    <span class="progress-label" id="progressLabel">0 / 6 questions répondues</span>
+                </div>
+
                 <div id="questionsContainer"></div>
                 
                 <button class="btn-primary" onclick="generateResults()">Voir les résultats d'analyse</button>
@@ -312,8 +567,18 @@
 
             <div id="results" class="results">
                 <h2 class="results-title">📊 Analyse des Courants Pédagogiques Identifiés</h2>
+
+                <!-- Radar chart -->
+                <div class="radar-container">
+                    <div class="radar-title">🕸️ Cartographie de votre profil pédagogique</div>
+                    <canvas id="radarCanvas" width="500" height="400"></canvas>
+                </div>
+
                 <div id="resultsContainer"></div>
-                <button class="btn-reset" onclick="reset()">Nouvelle analyse</button>
+                <div style="margin-top: 20px;">
+                    <button class="btn-reset" onclick="reset()">🔄 Nouvelle analyse</button>
+                    <button class="btn-print" onclick="window.print()">🖨️ Imprimer / Exporter PDF</button>
+                </div>
             </div>
         </div>
     </div>
@@ -624,11 +889,23 @@
             Array.from(optionsDiv.children).forEach(btn => {
                 btn.classList.remove('selected');
             });
-            
+
             button.classList.add('selected');
-            
+
             const question = questions.find(q => q.id === questionId);
             answers[questionId] = question.options[optionIndex];
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const answered = Object.keys(answers).length;
+            const total = questions.length;
+            const pct = Math.round(answered / total * 100);
+            const inner = document.getElementById('progressInner');
+            const label = document.getElementById('progressLabel');
+            if (inner) inner.style.width = pct + '%';
+            if (label) label.textContent = `${answered} / ${total} questions répondues`;
         }
 
         function generateResults() {
@@ -737,20 +1014,345 @@
                 container.appendChild(card);
             });
 
+            // Radar chart — deferred to next frame so the DOM is laid out
+            requestAnimationFrame(() => {
+                try { drawRadarChart(sortedCourants); } catch(e) { console.warn('Radar chart:', e); }
+            });
+
+            // Save to localStorage
+            saveToLocalStorage(sortedCourants);
+
+            // Synthesis section
+            if (sortedCourants.length > 0) {
+                const synthesisWrapper = document.createElement('div');
+                synthesisWrapper.innerHTML = `
+                    <div class="synthesis-section">
+                        <h3 class="synthesis-section-title">📝 Synthèse de l'Analyse Pédagogique</h3>
+                        <div class="synthesis-paragraphs">
+                            ${generateSynthesisText(sortedCourants).map(para => `
+                                <p class="synthesis-paragraph">${para}</p>
+                            `).join('')}
+                        </div>
+                        <h4 class="synthesis-subtitle">📊 Tableau de Synthèse des Courants Identifiés</h4>
+                        ${generateSynthesisTable(sortedCourants)}
+                    </div>
+                `;
+                container.appendChild(synthesisWrapper.firstElementChild);
+            }
+
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function generateSynthesisText(sortedCourants) {
+            if (sortedCourants.length === 0) return [];
+
+            const maxScore = sortedCourants[0].score;
+            const dominant = sortedCourants.filter(c => (c.score / maxScore * 100) >= 80);
+            const present   = sortedCourants.filter(c => (c.score / maxScore * 100) >= 50 && (c.score / maxScore * 100) < 80);
+
+            const paragraphs = [];
+
+            // Paragraph 1 : dominant approach(es)
+            if (dominant.length === 1) {
+                paragraphs.push(
+                    `L'analyse de votre situation révèle une orientation pédagogique principalement ancrée dans la <strong>${dominant[0].data.name}</strong>. ` +
+                    `Cette approche constitue le fil directeur dominant de votre pratique d'accompagnement, structurant la manière dont vous interagissez avec les bénéficiaires à La Pallanterie dans l'atelier conditioning-logistique.`
+                );
+            } else if (dominant.length > 1) {
+                const names = dominant.map(c => `<strong>${c.data.name}</strong>`).join(' et la ');
+                paragraphs.push(
+                    `L'analyse de votre situation révèle une posture pédagogique hybride, combinant de façon dominante la ${names}. ` +
+                    `Cette configuration plurielle témoigne d'une pratique professionnelle intégrative qui mobilise plusieurs référentiels théoriques de manière complémentaire, reflétant la complexité des situations d'accompagnement rencontrées.`
+                );
+            }
+
+            // Paragraph 2 : complementary approaches
+            if (present.length > 0) {
+                const presentNames = present.map(c => `<strong>${c.data.name}</strong>`).join(', ');
+                paragraphs.push(
+                    `En complémentarité, des éléments de ${presentNames} enrichissent votre palette d'intervention. ` +
+                    `Cette articulation entre courants pédagogiques illustre la richesse de la pratique professionnelle en accompagnement socio-professionnel, où différentes postures coexistent et se renforcent mutuellement selon les besoins spécifiques des bénéficiaires CEA et le contexte de l'atelier.`
+                );
+            } else if (sortedCourants.length > 1) {
+                const secondaryNames = sortedCourants.slice(1, 3).map(c => `<strong>${c.data.name}</strong>`).join(' et ');
+                paragraphs.push(
+                    `On note également la présence, à un niveau secondaire, d'influences de ${secondaryNames}. ` +
+                    `Ces éléments complémentaires viennent nuancer et enrichir la pratique dominante, témoignant d'une capacité à adapter sa posture pédagogique selon les besoins rencontrés.`
+                );
+            }
+
+            // Paragraph 3 : professional development
+            const mainCourant = sortedCourants[0];
+            let para3 = `Sur le plan du développement professionnel, cette analyse invite à prendre conscience de l'ancrage théorique de vos pratiques d'accompagnement. Approfondir les fondements de la <strong>${mainCourant.data.name}</strong>`;
+            if (sortedCourants.length > 1) {
+                const secondNames = sortedCourants
+                    .slice(1, Math.min(3, sortedCourants.length))
+                    .map(c => c.data.name)
+                    .join(' et de la ');
+                para3 += ` et explorer davantage les apports de la ${secondNames}`;
+            }
+            para3 += ` pourrait renforcer la cohérence et l'efficacité de vos interventions. La réflexivité sur ses propres pratiques pédagogiques constitue un levier essentiel pour l'amélioration continue de l'accompagnement dans le cadre de la formation MSP ARPIH.`;
+            paragraphs.push(para3);
+
+            return paragraphs;
+        }
+
+        function generateSynthesisTable(sortedCourants) {
+            if (sortedCourants.length === 0) return '';
+
+            const maxScore = sortedCourants[0].score;
+
+            const rows = sortedCourants.map(courant => {
+                const scorePercent = Math.round(courant.score / maxScore * 100);
+                let intensite, badgeClass;
+
+                if (scorePercent >= 80) {
+                    intensite  = '🔥 Dominant';
+                    badgeClass = 'intensite-dominant';
+                } else if (scorePercent >= 50) {
+                    intensite  = '⭐ Présent';
+                    badgeClass = 'intensite-present';
+                } else {
+                    intensite  = '💫 Identifié';
+                    badgeClass = 'intensite-identifie';
+                }
+
+                const mainTheoriciens = courant.data.theoriciens.slice(0, 2).join('<br>');
+                const mainIndicators  = courant.data.indicators.slice(0, 2);
+
+                return `
+                    <tr>
+                        <td><strong>${courant.data.name}</strong></td>
+                        <td>
+                            <span class="intensite-badge ${badgeClass}">${intensite}</span>
+                            <div style="margin-top:6px; display:flex; align-items:center; gap:6px;">
+                                <div class="score-bar-container">
+                                    <div class="score-bar-fill" style="width:${scorePercent}%;"></div>
+                                </div>
+                                <small style="color:#888;">${scorePercent}%</small>
+                            </div>
+                        </td>
+                        <td style="font-size:0.85em;">${mainTheoriciens}</td>
+                        <td>
+                            <ul style="padding-left:16px; margin:0;">
+                                ${mainIndicators.map(ind => `<li style="margin-bottom:4px;">${ind}</li>`).join('')}
+                            </ul>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            return `
+                <div class="synthesis-table-container">
+                    <table class="synthesis-table">
+                        <thead>
+                            <tr>
+                                <th style="width:22%;">Courant Pédagogique</th>
+                                <th style="width:18%;">Intensité &amp; Score</th>
+                                <th style="width:25%;">Théoriciens Principaux</th>
+                                <th style="width:35%;">Manifestations dans Votre Pratique</th>
+                            </tr>
+                        </thead>
+                        <tbody>${rows}</tbody>
+                    </table>
+                </div>
+            `;
         }
 
         function reset() {
             document.getElementById('situationDescription').value = '';
             situationText = "";
             answers = {};
-            
+
+            // Reset progress bar
+            const inner = document.getElementById('progressInner');
+            const label = document.getElementById('progressLabel');
+            if (inner) inner.style.width = '0%';
+            if (label) label.textContent = '0 / 6 questions répondues';
+
+            localStorage.removeItem('lastAnalysis');
+
             document.getElementById('step1').style.display = 'block';
             document.getElementById('questions').style.display = 'none';
             document.getElementById('results').style.display = 'none';
-            
+
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
+        // ── Radar Chart ──────────────────────────────────────────────────────
+        function drawRadarChart(sortedCourants) {
+            const canvas = document.getElementById('radarCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            const allKeys = Object.keys(courants);
+            const N = allKeys.length;
+            const scoreMap = {};
+            sortedCourants.forEach(c => { scoreMap[c.key] = c.score; });
+            const maxScore = Math.max(...sortedCourants.map(c => c.score), 1);
+
+            // Responsive canvas size (fallback to 460 if layout not ready)
+            const parentW = canvas.parentElement ? canvas.parentElement.clientWidth : 0;
+            const size = Math.max(300, Math.min(500, parentW > 100 ? parentW - 40 : 460));
+            canvas.width  = size;
+            canvas.height = Math.round(size * 0.82);
+
+            const W = canvas.width;
+            const H = canvas.height;
+            const cx = W / 2;
+            const cy = H / 2 + 10;
+            const R  = Math.min(cx, cy) - 70;
+
+            ctx.clearRect(0, 0, W, H);
+
+            // Grid polygons (4 levels)
+            for (let level = 1; level <= 4; level++) {
+                const r = R * level / 4;
+                ctx.beginPath();
+                allKeys.forEach((_, i) => {
+                    const angle = (2 * Math.PI * i / N) - Math.PI / 2;
+                    const x = cx + r * Math.cos(angle);
+                    const y = cy + r * Math.sin(angle);
+                    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+                });
+                ctx.closePath();
+                ctx.strokeStyle = '#dde0ff';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                if (level === 4) {
+                    ctx.fillStyle = 'rgba(102,126,234,0.04)';
+                    ctx.fill();
+                }
+            }
+
+            // Axes + labels
+            const shortNames = {
+                transmissif:       'Transmissif',
+                behaviorisme:      'Béhaviorisme',
+                cognitivisme_tcc:  'TCC',
+                humaniste:         'Humaniste',
+                systemique:        'Systémique',
+                socioconstructivisme: 'Socioconstr.',
+                competences:       'Compétences'
+            };
+
+            allKeys.forEach((key, i) => {
+                const angle  = (2 * Math.PI * i / N) - Math.PI / 2;
+                const xEdge  = cx + R * Math.cos(angle);
+                const yEdge  = cy + R * Math.sin(angle);
+
+                // Axis line
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(xEdge, yEdge);
+                ctx.strokeStyle = '#ccd0f0';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                // Label
+                const labelR = R + 52;
+                const lx = cx + labelR * Math.cos(angle);
+                const ly = cy + labelR * Math.sin(angle);
+                ctx.fillStyle = '#555';
+                ctx.font = `bold 11px 'Segoe UI', sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(shortNames[key] || key, lx, ly);
+            });
+
+            // Data polygon
+            ctx.beginPath();
+            allKeys.forEach((key, i) => {
+                const angle = (2 * Math.PI * i / N) - Math.PI / 2;
+                const r = R * (scoreMap[key] || 0) / maxScore;
+                const x = cx + r * Math.cos(angle);
+                const y = cy + r * Math.sin(angle);
+                i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+            });
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(102,126,234,0.30)';
+            ctx.fill();
+            ctx.strokeStyle = '#667eea';
+            ctx.lineWidth = 2.5;
+            ctx.stroke();
+
+            // Dots
+            allKeys.forEach((key, i) => {
+                const angle = (2 * Math.PI * i / N) - Math.PI / 2;
+                const r = R * (scoreMap[key] || 0) / maxScore;
+                const x = cx + r * Math.cos(angle);
+                const y = cy + r * Math.sin(angle);
+                ctx.beginPath();
+                ctx.arc(x, y, 5, 0, 2 * Math.PI);
+                ctx.fillStyle = '#764ba2';
+                ctx.fill();
+                ctx.strokeStyle = 'white';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            });
+        }
+
+        // ── LocalStorage ─────────────────────────────────────────────────────
+        function saveToLocalStorage(sortedCourants) {
+            try {
+                const now = new Date();
+                const date = now.toLocaleDateString('fr-FR', {
+                    day: '2-digit', month: '2-digit', year: 'numeric',
+                    hour: '2-digit', minute: '2-digit'
+                });
+                const data = {
+                    date,
+                    situationText,
+                    answers,
+                    sortedCourantsKeys: sortedCourants.map(c => ({ key: c.key, score: c.score }))
+                };
+                localStorage.setItem('lastAnalysis', JSON.stringify(data));
+            } catch (e) { /* localStorage may be unavailable */ }
+        }
+
+        function checkLocalStorage() {
+            try {
+                const saved = localStorage.getItem('lastAnalysis');
+                if (!saved) return;
+                const data = JSON.parse(saved);
+                const banner = document.getElementById('restoreBanner');
+                const dateSpan = document.getElementById('restoreDate');
+                if (banner && data.date) {
+                    dateSpan.textContent = data.date;
+                    banner.style.display = 'flex';
+                }
+            } catch (e) {}
+        }
+
+        function restoreLastAnalysis() {
+            try {
+                const saved = localStorage.getItem('lastAnalysis');
+                if (!saved) return;
+                const data = JSON.parse(saved);
+
+                situationText = data.situationText || '';
+                answers = data.answers || {};
+                document.getElementById('situationDescription').value = situationText;
+
+                const sortedCourants = (data.sortedCourantsKeys || []).map(item => ({
+                    key: item.key,
+                    score: item.score,
+                    data: courants[item.key]
+                })).filter(c => c.data);
+
+                dismissRestoreBanner();
+                document.getElementById('step1').style.display = 'none';
+                displayResults(sortedCourants);
+            } catch (e) { alert("Impossible de restaurer l'analyse précédente."); }
+        }
+
+        function dismissRestoreBanner() {
+            const banner = document.getElementById('restoreBanner');
+            if (banner) banner.style.display = 'none';
+        }
+
+        // Init
+        checkLocalStorage();
     </script>
 </body>
 </html>
