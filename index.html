@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analyseur de Courants Pédagogiques - MSP ARPIH</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,10 +13,11 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'DM Sans', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
+            color: #2c2c2c;
         }
 
         .container {
@@ -30,22 +32,32 @@
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 30px;
+            padding: 40px 30px;
             text-align: center;
         }
 
         .header h1 {
-            font-size: 2em;
-            margin-bottom: 10px;
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.2em;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .header h1 em {
+            font-style: italic;
+            color: #ffd700;
+            font-weight: 400;
         }
 
         .header p {
-            opacity: 0.9;
-            font-size: 1.1em;
+            opacity: 0.95;
+            font-size: 1em;
+            font-weight: 300;
         }
 
         .content {
             padding: 40px;
+            position: relative;
         }
 
         .section {
@@ -53,17 +65,19 @@
         }
 
         .section-title {
-            font-size: 1.5em;
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.8em;
             color: #667eea;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
+            font-weight: 700;
         }
 
         .section-title::before {
             content: "📋";
-            margin-right: 10px;
-            font-size: 1.2em;
+            margin-right: 12px;
+            font-size: 1.3em;
         }
 
         textarea {
@@ -73,314 +87,18 @@
             border: 2px solid #e0e0e0;
             border-radius: 10px;
             font-size: 1em;
-            font-family: inherit;
+            font-family: 'DM Sans', sans-serif;
             resize: vertical;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
         }
 
         textarea:focus {
             outline: none;
             border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        .questions {
-            display: none;
-            margin-top: 30px;
-        }
-
-        .question-block {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            border-left: 4px solid #667eea;
-        }
-
-        .question-block h3 {
-            color: #333;
-            margin-bottom: 15px;
-            font-size: 1.2em;
-        }
-
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .option-button {
-            padding: 12px 20px;
-            border: 2px solid #e0e0e0;
-            background: white;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: left;
-            font-size: 1em;
-        }
-
-        .option-button:hover {
-            background: #f0f0f0;
-            border-color: #667eea;
-        }
-
-        .option-button.selected {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1em;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            margin-top: 20px;
-            display: inline-block;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-primary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .results {
-            display: none;
-            margin-top: 40px;
-        }
-
-        .results-title {
-            font-size: 2em;
-            color: #667eea;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .courant-card {
-            background: white;
-            border: 2px solid #e0e0e0;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .courant-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .courant-name {
-            font-size: 1.5em;
-            color: #333;
-            font-weight: bold;
-        }
-
-        .courant-score {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 1.2em;
-        }
-
-        .courant-description {
-            color: #666;
-            line-height: 1.8;
-            margin-bottom: 20px;
-        }
-
-        .indicators {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
-
-        .indicators h4 {
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-
-        .indicators ul {
-            padding-left: 20px;
-        }
-
-        .indicators li {
-            margin-bottom: 8px;
-            color: #555;
-        }
-
-        .theoriciens {
-            background: #fff8e6;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
-
-        .theoriciens h4 {
-            color: #d97706;
-            margin-bottom: 10px;
-        }
-
-        .references {
-            background: #e6f3ff;
-            padding: 15px;
-            border-radius: 10px;
-            font-size: 0.9em;
-        }
-
-        .references h4 {
-            color: #2563eb;
-            margin-bottom: 10px;
-        }
-
-        .references p {
-            color: #555;
-            line-height: 1.6;
-            margin-bottom: 5px;
-        }
-
-        .btn-reset {
-            background: #6c757d;
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1em;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 20px;
-        }
-
-        .btn-reset:hover {
-            background: #5a6268;
-        }
-
-        /* Synthesis Section */
-        .synthesis-section {
-            background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
-            border: 2px solid #667eea;
-            border-radius: 15px;
-            padding: 30px;
-            margin-top: 35px;
-        }
-
-        .synthesis-section-title {
-            font-size: 1.4em;
-            color: #667eea;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border-bottom: 2px solid #667eea;
-            padding-bottom: 12px;
-        }
-
-        .synthesis-subtitle {
-            color: #667eea;
-            margin: 22px 0 12px;
-            font-size: 1.05em;
-        }
-
-        .synthesis-paragraphs {
-            margin-bottom: 10px;
-        }
-
-        .synthesis-paragraph {
-            color: #444;
-            line-height: 1.9;
-            margin-bottom: 12px;
-            text-align: justify;
-            padding: 14px 18px;
-            background: white;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-        }
-
-        .synthesis-table-container {
-            overflow-x: auto;
-            margin-top: 10px;
-        }
-
-        .synthesis-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            font-size: 0.9em;
-        }
-
-        .synthesis-table th {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 12px 14px;
-            text-align: left;
-        }
-
-        .synthesis-table td {
-            padding: 12px 14px;
-            border-bottom: 1px solid #e8e8f0;
-            color: #555;
-            vertical-align: top;
-        }
-
-        .synthesis-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .synthesis-table tr:nth-child(even) td {
-            background: #f8f9ff;
-        }
-
-        .synthesis-table tr:hover td {
-            background: #f0f4ff;
-        }
-
-        .intensite-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.85em;
-            font-weight: bold;
-            white-space: nowrap;
-        }
-
-        .intensite-dominant { background: #ffe4e4; color: #c53030; }
-        .intensite-present  { background: #fff3cd; color: #b7791f; }
-        .intensite-identifie{ background: #dbeafe; color: #1d4ed8; }
-
-        .score-bar-container {
-            background: #e0e0f0;
-            border-radius: 10px;
-            height: 8px;
-            width: 90px;
-            display: inline-block;
-            vertical-align: middle;
-        }
-
-        .score-bar-fill {
-            height: 100%;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        /* Progress indicator */
+        /* Progress Bar */
         .progress-bar-wrapper {
             display: flex;
             align-items: center;
@@ -409,76 +127,498 @@
 
         .progress-label {
             color: #667eea;
-            font-weight: bold;
+            font-weight: 500;
             font-size: 0.95em;
             white-space: nowrap;
             min-width: 160px;
             text-align: right;
         }
 
-        /* Radar chart */
+        .questions {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .question-block {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+            animation: slideIn 0.4s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-block h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-button {
+            padding: 12px 20px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            font-size: 1em;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .option-button:hover {
+            background: #f0f0f0;
+            border-color: #667eea;
+        }
+
+        .option-button.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 20px;
+            display: inline-block;
+            font-weight: 500;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results {
+            display: none;
+            margin-top: 40px;
+        }
+
+        .results-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2em;
+            color: #667eea;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        /* Collapsible Courant Cards */
+        .courant-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 0;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            animation: fadeInUp 0.5s ease;
+            overflow: hidden;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .courant-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px;
+            cursor: pointer;
+            user-select: none;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .courant-header:hover {
+            background: #f8f9fa;
+        }
+
+        .courant-header.collapsed ~ .courant-body {
+            display: none;
+        }
+
+        .courant-header.collapsed {
+            border-bottom-color: #e0e0e0;
+        }
+
+        .courant-name {
+            font-size: 1.3em;
+            color: #333;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .courant-toggle {
+            font-size: 1.2em;
+            margin-left: 20px;
+            transition: transform 0.3s;
+        }
+
+        .courant-header.collapsed .courant-toggle {
+            transform: rotate(0deg);
+        }
+
+        .courant-header:not(.collapsed) .courant-toggle {
+            transform: rotate(180deg);
+        }
+
+        .courant-score {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.95em;
+            margin-right: 15px;
+        }
+
+        .courant-body {
+            padding: 0 25px 25px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .courant-description {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .indicators {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .indicators h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .indicators ul {
+            padding-left: 20px;
+        }
+
+        .indicators li {
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .theoriciens {
+            background: #fff8e6;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #d97706;
+        }
+
+        .theoriciens h4 {
+            color: #d97706;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .references {
+            background: #e6f3ff;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 0.9em;
+            border-left: 4px solid #2563eb;
+        }
+
+        .references h4 {
+            color: #2563eb;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .references p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 5px;
+        }
+
+        /* Radar Chart */
         .radar-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: 10px 0 30px;
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border: 1px solid #e8e8f0;
+            margin: 30px 0;
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid #e0e8ff;
         }
 
         .radar-title {
             color: #667eea;
-            font-size: 1.05em;
-            font-weight: bold;
-            margin-bottom: 12px;
-        }
-
-        /* Restore banner */
-        .restore-banner {
-            background: linear-gradient(135deg, #e0f7fa 0%, #e8f5e9 100%);
-            border: 2px solid #26a69a;
-            border-radius: 12px;
-            padding: 14px 20px;
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.3em;
+            font-weight: 700;
             margin-bottom: 20px;
-            display: none;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-            flex-wrap: wrap;
         }
 
-        .restore-banner p { color: #00695c; font-size: 0.95em; margin: 0; }
+        /* Synthesis Section */
+        .synthesis-section {
+            background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+            border: 2px solid #667eea;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 35px;
+        }
 
-        .restore-banner-btns { display: flex; gap: 10px; }
+        .synthesis-section-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.5em;
+            color: #667eea;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 12px;
+            font-weight: 700;
+        }
 
-        .btn-restore {
-            background: #26a69a;
+        .synthesis-subtitle {
+            color: #667eea;
+            margin: 22px 0 12px;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .synthesis-paragraph {
+            color: #444;
+            line-height: 1.9;
+            margin-bottom: 12px;
+            text-align: justify;
+            padding: 14px 18px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .copy-synthesis-btn {
+            background: #4CAF50;
             color: white;
-            padding: 8px 18px;
+            padding: 10px 20px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 0.9em;
-            transition: background 0.2s;
+            font-size: 0.95em;
+            transition: all 0.3s;
+            margin-top: 12px;
         }
-        .btn-restore:hover { background: #00897b; }
 
-        .btn-dismiss {
-            background: transparent;
-            color: #26a69a;
-            padding: 8px 14px;
-            border: 1px solid #26a69a;
+        .copy-synthesis-btn:hover {
+            background: #45a049;
+        }
+
+        /* Synthesis Table */
+        .synthesis-table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        .synthesis-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            font-size: 0.9em;
+        }
+
+        .synthesis-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 14px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .synthesis-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid #e8e8f0;
+            color: #555;
+            vertical-align: top;
+        }
+
+        .synthesis-table tr:nth-child(even) td {
+            background: #f8f9ff;
+        }
+
+        /* Recommendations Section */
+        .recommendations-section {
+            background: linear-gradient(135deg, #f0fff4 0%, #e6fffa 100%);
+            border: 2px solid #10b981;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .recommendations-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.5em;
+            color: #10b981;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .recommendation-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 12px;
             border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9em;
-            transition: all 0.2s;
+            border-left: 4px solid #10b981;
+            line-height: 1.7;
         }
-        .btn-dismiss:hover { background: #e0f7fa; }
 
-        /* Print button */
+        /* Compatibility Matrix */
+        .compatibility-section {
+            background: linear-gradient(135deg, #fef3f8 0%, #fef9e7 100%);
+            border: 2px solid #f59e0b;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .compatibility-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.5em;
+            color: #f59e0b;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .compatibility-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .compat-pair {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #fde68a;
+            text-align: center;
+        }
+
+        .compat-pair-names {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .compat-strength {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        /* Timeline */
+        .timeline-section {
+            background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+            border: 2px solid #a855f7;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .timeline-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.5em;
+            color: #a855f7;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline-item {
+            padding: 15px;
+            margin-bottom: 15px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #a855f7;
+            position: relative;
+        }
+
+        .timeline-year {
+            font-weight: 700;
+            color: #a855f7;
+            font-size: 0.95em;
+        }
+
+        .timeline-theorist {
+            color: #555;
+            font-size: 0.9em;
+            margin-top: 4px;
+        }
+
+        /* Share & Export */
+        .share-section {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn-reset {
+            background: #6c757d;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .btn-reset:hover {
+            background: #5a6268;
+        }
+
         .btn-print {
             background: #38a169;
             color: white;
@@ -488,63 +628,69 @@
             font-size: 1em;
             cursor: pointer;
             transition: all 0.3s;
-            margin-top: 20px;
-            margin-left: 10px;
+            font-weight: 500;
         }
-        .btn-print:hover { background: #2f855a; }
 
-        /* Print styles */
+        .btn-print:hover {
+            background: #2f855a;
+        }
+
+        .btn-share {
+            background: #0ea5e9;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .btn-share:hover {
+            background: #0284c7;
+        }
+
+        /* Copyright Bar */
+        .copyright-bar {
+            position: fixed;
+            bottom: 6px;
+            right: 14px;
+            font-size: 9.5px;
+            color: #b8b0a2;
+            font-family: 'DM Sans', sans-serif;
+            z-index: 15;
+            pointer-events: none;
+            letter-spacing: 0.3px;
+        }
+
         @media print {
             body { background: white !important; padding: 0 !important; }
             .container { box-shadow: none !important; border-radius: 0 !important; max-width: 100% !important; }
-            .header {
-                background: #667eea !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            .btn-reset, .btn-print, .restore-banner, .progress-bar-wrapper { display: none !important; }
-            .courant-card { break-inside: avoid; page-break-inside: avoid; }
-            .synthesis-section { break-inside: avoid; page-break-inside: avoid; }
-            .radar-container { break-inside: avoid; page-break-inside: avoid; }
+            .btn-reset, .btn-print, .btn-share, .progress-bar-wrapper, .copyright-bar { display: none !important; }
+            .courant-card { page-break-inside: avoid; }
+            .synthesis-section { page-break-inside: avoid; }
+            .radar-container { page-break-inside: avoid; }
         }
 
         @media (max-width: 768px) {
-            .content {
-                padding: 20px;
-            }
-
-            .header h1 {
-                font-size: 1.5em;
-            }
-
-            .courant-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
+            .content { padding: 20px; }
+            .header h1 { font-size: 1.5em; }
+            .courant-header { flex-direction: column; align-items: flex-start; gap: 10px; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎓 Analyseur de Courants Pédagogiques</h1>
-            <p>Outil d'analyse pour les situations d'accompagnement à La Pallanterie - Formation MSP ARPIH</p>
+            <h1>🎓 Analyseur de Courants Pédagogiques <em>— Formation MSP ARPIH</em></h1>
+            <p>Outil d'analyse pour les situations d'accompagnement à La Pallanterie</p>
         </div>
 
         <div class="content">
-            <!-- Restore banner (shown if a previous analysis exists in localStorage) -->
-            <div id="restoreBanner" class="restore-banner">
-                <p>💾 Une analyse précédente a été retrouvée (<span id="restoreDate"></span>). Souhaitez-vous la restaurer ?</p>
-                <div class="restore-banner-btns">
-                    <button class="btn-restore" onclick="restoreLastAnalysis()">Restaurer</button>
-                    <button class="btn-dismiss" onclick="dismissRestoreBanner()">Ignorer</button>
-                </div>
-            </div>
-
             <div id="step1" class="section">
                 <h2 class="section-title">Décrivez votre situation</h2>
-                <textarea id="situationDescription" placeholder="Décrivez une situation d'accompagnement vécue à La Pallanterie (atelier conditioning-logistique). Par exemple : interactions avec un bénéficiaire CEA, méthode utilisée, objectifs visés, résultats observés..."></textarea>
+                <textarea id="situationDescription" placeholder="Décrivez une situation d'accompagnement vécue à La Pallanterie (atelier conditionnement-logistique). Par exemple : interactions avec un bénéficiaire CEA, méthode utilisée, objectifs visés, résultats observés..."></textarea>
                 <button class="btn-primary" onclick="analyzerInitial()">Analyser la situation</button>
             </div>
 
@@ -561,35 +707,39 @@
                 </div>
 
                 <div id="questionsContainer"></div>
-                
+
                 <button class="btn-primary" onclick="generateResults()">Voir les résultats d'analyse</button>
             </div>
 
             <div id="results" class="results">
                 <h2 class="results-title">📊 Analyse des Courants Pédagogiques Identifiés</h2>
 
-                <!-- Radar chart -->
                 <div class="radar-container">
                     <div class="radar-title">🕸️ Cartographie de votre profil pédagogique</div>
                     <canvas id="radarCanvas" width="500" height="400"></canvas>
                 </div>
 
                 <div id="resultsContainer"></div>
-                <div style="margin-top: 20px;">
+
+                <div class="share-section">
                     <button class="btn-reset" onclick="reset()">🔄 Nouvelle analyse</button>
-                    <button class="btn-print" onclick="window.print()">🖨️ Imprimer / Exporter PDF</button>
+                    <button class="btn-print" onclick="window.print()">🖨️ Imprimer / PDF</button>
+                    <button class="btn-share" onclick="copyShareLink()">🔗 Partager</button>
                 </div>
             </div>
         </div>
     </div>
 
+    <div class="copyright-bar">© 2025 EPI — MSP ARPIH La Pallanterie</div>
+
     <script>
-        // Base de données des courants pédagogiques avec sources académiques vérifiées
         const courants = {
             transmissif: {
-                name: "Pédagogie Transmissive / Magistrale",
-                description: "Le professionnel détient le savoir et le transmet de manière structurée au bénéficiaire. L'apprentissage repose sur l'explication, la démonstration et la reproduction. L'erreur est vue comme un raté à corriger.",
+                name: "Pédagogie Transmissive",
+                color: "#ff6b6b",
+                description: "Le professionnel détient le savoir et le transmet de manière structurée au bénéficiaire. L'apprentissage repose sur l'explication, la démonstration et la reproduction.",
                 theoriciens: ["Méthode traditionnelle d'enseignement"],
+                year: "1800s",
                 indicators: [
                     "Vous expliquez étape par étape comment faire",
                     "Vous montrez puis demandez de reproduire",
@@ -599,153 +749,181 @@
                     "L'erreur est corrigée immédiatement"
                 ],
                 references: [
-                    "Blain-Joguet, E. (2012). Au cœur de l'erreur. Actualités en analyse transactionnelle, 141(1), 71-73. https://shs.cairn.info/",
-                    "Goupil, G. et al. (2016). Des théories de l'apprentissage à l'enseignement. Éduquer et Former, Éditions Sciences Humaines, p.78-84. https://shs.cairn.info/"
+                    "Blain-Joguet, E. (2012). Au cœur de l'erreur. Actualités en analyse transactionnelle, 141(1), 71-73.",
+                    "Goupil, G. et al. (2016). Des théories de l'apprentissage à l'enseignement. Éduquer et Former, Éditions Sciences Humaines."
+                ],
+                recommendations: [
+                    "Structurez vos démonstrations en étapes courtes et mémorables",
+                    "Alternez explications et mises en pratique rapides",
+                    "Utilisez des outils visuels pour faciliter la compréhension",
+                    "Proposez des tâches proches des situations réelles"
                 ]
             },
             behaviorisme: {
                 name: "Béhaviorisme",
-                description: "L'apprentissage se fait par conditionnement : association stimulus-réponse, renforcement positif (récompenses, encouragements) ou négatif. Focus sur les comportements observables et la répétition pour créer des automatismes.",
-                theoriciens: ["John B. Watson (fondateur, 1913)", "B.F. Skinner (conditionnement opérant)", "Ivan Pavlov (conditionnement classique)"],
+                color: "#4ecdc4",
+                description: "L'apprentissage se fait par conditionnement : association stimulus-réponse, renforcement positif (récompenses, encouragements) ou négatif. Focus sur les comportements observables.",
+                theoriciens: ["John B. Watson (1913)", "B.F. Skinner (conditionnement opérant)", "Ivan Pavlov (conditionnement classique)"],
+                year: "1913-1970s",
                 indicators: [
-                    "Vous utilisez des encouragements ou félicitations pour motiver",
+                    "Vous utilisez des encouragements ou félicitations",
                     "Vous décomposez la tâche en petites étapes simples",
-                    "Vous cherchez à modifier un comportement précis et observable",
-                    "Vous répétez jusqu'à ce que le geste devienne automatique",
-                    "Vous utilisez des récompenses ou sanctions pour renforcer",
+                    "Vous cherchez à modifier un comportement observable",
+                    "Vous répétez jusqu'à automatisation",
+                    "Vous utilisez des récompenses ou sanctions",
                     "L'erreur est vue comme une mauvaise réponse à éliminer"
                 ],
                 references: [
-                    "Lemay, M. (2014). L'approche béhavioriste et son modèle d'apprentissage social. Forces et souffrances psychiques de l'enfant, érès, p.265-274. https://shs.cairn.info/",
-                    "Richelle, M. (1993). Le behaviorisme aujourd'hui. Du nouveau sur l'esprit?, PUF, p.51-84. https://shs.cairn.info/",
-                    "Mariné, C. et Escribe, C. (2012). Naissance du behaviorisme. Histoire de la psychologie, Éditions Sciences Humaines, p.75-77. https://shs.cairn.info/",
-                    "Huteau, M. (2007). Apprentissage (développement de compétences nouvelles). Orientation et insertion professionnelle, Dunod, p.45-48. https://shs.cairn.info/"
+                    "Lemay, M. (2014). L'approche béhavioriste et son modèle d'apprentissage social.",
+                    "Richelle, M. (1993). Le behaviorisme aujourd'hui. PUF."
+                ],
+                recommendations: [
+                    "Identifiez clairement les comportements cibles",
+                    "Décomposez en micro-étapes de difficulté progressive",
+                    "Renforcez positifs immédiatement après chaque progrès",
+                    "Créez des boucles d'apprentissage courtes et répétitives"
                 ]
             },
             cognitivisme_tcc: {
-                name: "Cognitivo-Comportemental (TCC)",
-                description: "Combine l'analyse des processus mentaux (pensées, croyances, représentations) avec la modification des comportements. Focus sur la résolution de problèmes, les stratégies cognitives et le traitement de l'information.",
-                theoriciens: ["Aaron Beck", "Albert Ellis", "Albert Bandura (apprentissage social)"],
+                name: "Cognitivo-Comportemental",
+                color: "#95e1d3",
+                description: "Combine l'analyse des processus mentaux (pensées, croyances) avec la modification des comportements. Focus sur la résolution de problèmes et les stratégies cognitives.",
+                theoriciens: ["Aaron Beck", "Albert Ellis", "Albert Bandura"],
+                year: "1960s-1980s",
                 indicators: [
-                    "Vous aidez le bénéficiaire à identifier ses pensées face à une difficulté",
-                    "Vous travaillez sur la gestion des émotions lors de l'apprentissage",
-                    "Vous cherchez à modifier des croyances limitantes ('je ne suis pas capable')",
-                    "Vous utilisez la résolution de problème de manière structurée",
-                    "Vous combinez travail sur les pensées et sur les actions concrètes",
-                    "Vous analysez comment la personne traite l'information"
+                    "Vous aidez à identifier les pensées face à une difficulté",
+                    "Vous travaillez sur la gestion des émotions",
+                    "Vous modifiez des croyances limitantes",
+                    "Vous utilisez la résolution de problème structurée",
+                    "Vous combinez travail sur pensées et actions",
+                    "Vous analysez le traitement de l'information"
                 ],
                 references: [
-                    "Goupil, G. et al. (2016). Des théories de l'apprentissage à l'enseignement. Éduquer et Former, Éditions Sciences Humaines, p.78-84. https://shs.cairn.info/",
-                    "Carré, P. (2019). Psychopédagogie des adultes. Psychologies pour la formation, Dunod. https://shs.cairn.info/"
+                    "Goupil, G. et al. (2016). Des théories de l'apprentissage à l'enseignement.",
+                    "Carré, P. (2019). Psychopédagogie des adultes. Dunod."
+                ],
+                recommendations: [
+                    "Explorez les pensées automatiques derrière les difficultés",
+                    "Questionnez les croyances limitantes avec bienveillance",
+                    "Proposez des expériences comportementales pour tester les croyances",
+                    "Développez des stratégies de gestion émotionnelle"
                 ]
             },
             humaniste: {
-                name: "Approche Humaniste (Rogers)",
-                description: "Centré sur la personne, ses besoins et son potentiel d'actualisation. Le professionnel crée un climat de confiance, d'écoute empathique et d'acceptation inconditionnelle pour faciliter le développement autonome du bénéficiaire. La pédagogie est non-directive.",
-                theoriciens: [
-                    "Carl Rogers (1902-1987) - Approche Centrée sur la Personne (ACP)",
-                    "Abraham Maslow (pyramide des besoins)",
-                    "Concepts clés : empathie, congruence, considération positive inconditionnelle"
-                ],
+                name: "Approche Humaniste",
+                color: "#ffd93d",
+                description: "Centré sur la personne, ses besoins et son potentiel. Le professionnel crée un climat de confiance, d'écoute empathique et d'acceptation inconditionnelle.",
+                theoriciens: ["Carl Rogers (1902-1987)", "Abraham Maslow (pyramide des besoins)"],
+                year: "1950s-1960s",
                 indicators: [
                     "Vous créez une relation de confiance et d'acceptation",
-                    "Vous écoutez le vécu et les ressentis du bénéficiaire",
-                    "Vous manifestez de l'empathie et du respect inconditionnel",
-                    "Vous croyez en la capacité du bénéficiaire à trouver ses propres solutions",
-                    "Vous adoptez une posture non-directive et facilitatrice",
-                    "Le bénéficiaire est au centre, vous l'accompagnez dans son cheminement",
-                    "L'erreur est source d'apprentissage et de croissance personnelle"
+                    "Vous écoutez le vécu et les ressentis",
+                    "Vous manifestez de l'empathie et du respect",
+                    "Vous croyez en la capacité du bénéficiaire",
+                    "Vous adoptez une posture non-directive",
+                    "Le bénéficiaire est au centre de l'accompagnement",
+                    "L'erreur est source d'apprentissage et de croissance"
                 ],
                 references: [
-                    "Lipiansky, E.-M. (2019). Carl Rogers et la psychologie humaniste. Psychologies pour la formation, Dunod, p.87-104. https://shs.cairn.info/",
-                    "Marc, E. (2024). Carl Rogers. Une approche humaniste de la personne. Les grands auteurs en psychologie et le management, EMS Éditions, p.135-152. https://shs.cairn.info/",
-                    "Vaillé, H. (2020). Carl Rogers (1902-1987) : Le Développement de la personne. Bibliothèque idéale de psychologie, p.164-165. https://shs.cairn.info/",
-                    "Rogers, C. R. (2001). L'approche centrée sur la personne. Anthologie de textes, Le Touvet, Ambre"
+                    "Lipiansky, E.-M. (2019). Carl Rogers et la psychologie humaniste.",
+                    "Marc, E. (2024). Carl Rogers. Une approche humaniste de la personne. EMS Éditions."
+                ],
+                recommendations: [
+                    "Pratiquez l'écoute active sans jugement",
+                    "Reflétez les émotions pour montrer votre compréhension",
+                    "Posez des questions ouvertes pour stimuler la réflexion",
+                    "Validez les émotions même si vous n'êtes pas d'accord"
                 ]
             },
             systemique: {
-                name: "Approche Systémique (École de Palo Alto)",
-                description: "Analyse les interactions et la communication dans le système relationnel global (bénéficiaire, équipe, environnement, institution). Focus sur les patterns interactionnels, les boucles de rétroaction, la circularité et le contexte. On ne peut pas ne pas communiquer.",
-                theoriciens: [
-                    "Gregory Bateson (1904-1980) - Fondateur, anthropologue",
-                    "Paul Watzlawick (1921-2007) - Une logique de la communication (1967)",
-                    "Don Jackson - Mental Research Institute (MRI)",
-                    "Jay Haley",
-                    "Virginia Satir - Thérapie familiale",
-                    "John Weakland",
-                    "William Fry",
-                    "Cybernétique et théorie des systèmes"
-                ],
+                name: "Approche Systémique",
+                color: "#6bcf7f",
+                description: "Analyse les interactions et la communication dans le système relationnel global. Focus sur les patterns interactionnels, les boucles de rétroaction et le contexte.",
+                theoriciens: ["Gregory Bateson (1904-1980)", "Paul Watzlawick (1921-2007)", "Virginia Satir"],
+                year: "1950s-1970s",
                 indicators: [
-                    "Vous analysez la dynamique relationnelle (comment les personnes interagissent)",
-                    "Vous observez les patterns de communication (qui parle à qui, comment)",
-                    "Vous travaillez sur les boucles relationnelles (action-réaction-action)",
-                    "Vous considérez le contexte et l'environnement global",
-                    "Vous intervenez sur les interactions plutôt que sur l'individu seul",
-                    "Vous êtes attentif à la communication non-verbale et aux paradoxes",
-                    "Vous utilisez des recadrages ou interventions paradoxales",
-                    "Vous pensez en termes de causalité circulaire plutôt que linéaire"
+                    "Vous analysez la dynamique relationnelle",
+                    "Vous observez les patterns de communication",
+                    "Vous travaillez sur les boucles relationnelles",
+                    "Vous considérez le contexte et l'environnement",
+                    "Vous intervenez sur les interactions",
+                    "Vous êtes attentif à la communication non-verbale",
+                    "Vous utilisez des recadrages",
+                    "Vous pensez en causalité circulaire"
                 ],
                 references: [
-                    "Picard, D., Marc, E. (2015). L'école de Palo Alto, PUF. https://shs.cairn.info/",
-                    "Wittezaele, J.-J. et Garcia, T. (2012). Palo Alto ou les paradoxes de la communication. Histoire de la psychologie, p.121-130. https://shs.cairn.info/",
-                    "Molénat, X. (2020). Paul Watzlawick (1921-2007). Bibliothèque idéale de psychologie, p.197-198. https://shs.cairn.info/",
-                    "Watzlawick, P., Helmick-Beavin, J., Jackson, D. (1972). Une logique de la communication, Seuil (original : Pragmatics of Human Communication, 1967)",
-                    "Bateson, G., Ruesch, J. (1988). Communication et Société, Seuil"
+                    "Picard, D., Marc, E. (2015). L'école de Palo Alto. PUF.",
+                    "Watzlawick, P. et al. (1972). Une logique de la communication. Seuil."
+                ],
+                recommendations: [
+                    "Observez qui communique avec qui et comment",
+                    "Identifiez les boucles relationnelles répétitives",
+                    "Cherchez à décoder les patterns cachés",
+                    "Proposez des interventions qui changent la dynamique"
                 ]
             },
             socioconstructivisme: {
                 name: "Socioconstructivisme",
-                description: "L'apprentissage se construit par l'interaction sociale et la coopération. Le bénéficiaire construit activement ses connaissances avec l'aide d'autrui (médiation sociale). Zone proximale de développement : écart entre ce que la personne peut faire seule et avec aide. Le conflit socio-cognitif est source de progrès.",
-                theoriciens: [
-                    "Lev Vygotski (1896-1934) - Psychologue russe",
-                    "Jean Piaget (1896-1980) - Constructivisme, épistémologie génétique",
-                    "Henri Wallon (1879-1962)",
-                    "Jerome Bruner - Étayage (scaffolding)",
-                    "Concepts clés : Zone Proximale de Développement (ZPD), médiation, interpsychique → intrapsychique"
-                ],
+                color: "#a8dadc",
+                description: "L'apprentissage se construit par l'interaction sociale et la coopération. Zone proximale de développement : écart entre ce que la personne peut faire seule et avec aide.",
+                theoriciens: ["Lev Vygotski (1896-1934)", "Jean Piaget (1896-1980)", "Jerome Bruner (étayage)"],
+                year: "1930s-1970s",
                 indicators: [
                     "Vous favorisez les échanges entre bénéficiaires",
                     "Vous créez des situations de travail collaboratif",
-                    "Vous utilisez les interactions sociales comme moteur d'apprentissage",
-                    "Vous vous situez dans la 'zone proximale' (ni trop facile, ni trop difficile)",
-                    "Vous encouragez la confrontation constructive des points de vue",
-                    "Le conflit cognitif entre pairs est source d'apprentissage",
-                    "L'apprentissage se fait d'abord socialement puis individuellement"
+                    "Vous utilisez les interactions comme moteur",
+                    "Vous vous situez dans la 'zone proximale'",
+                    "Vous encouragez la confrontation constructive",
+                    "Le conflit cognitif est source d'apprentissage",
+                    "L'apprentissage se fait d'abord socialement"
                 ],
                 references: [
-                    "Garnier, C., Bednarz, N. et Ulanovskaya, I. (2009). Après Vygotski et Piaget : Perspectives sociale et constructiviste. De Boeck Supérieur. https://shs.cairn.info/",
-                    "Bourgeois, É. (2019). Jean Piaget et le paradigme constructiviste de l'apprentissage. Psychologies pour la formation, Dunod, p.71-86. https://shs.cairn.info/",
-                    "Grangeat, M. (2016). Lev S. Vygotski : l'apprentissage par le groupe. Éduquer et Former, p.134-141. https://shs.cairn.info/",
-                    "Schneuwly, B. et Bronckart, J.-P. (1985). Vygotsky aujourd'hui, Delachaux et Niestlé"
+                    "Garnier, C. et al. (2009). Après Vygotski et Piaget : Perspectives sociale et constructiviste.",
+                    "Grangeat, M. (2016). Lev S. Vygotski : l'apprentissage par le groupe."
+                ],
+                recommendations: [
+                    "Créez des groupes hétérogènes pour favoriser l'apprentissage",
+                    "Laissez le conflit cognitif se développer naturellement",
+                    "Ajustez votre aide selon la zone proximale",
+                    "Encouragez la verbalisation entre pairs"
                 ]
             },
             competences: {
-                name: "Pédagogie par Compétences / Objectifs",
-                description: "L'apprentissage vise le développement de compétences professionnelles mobilisables en situation réelle de travail. Approche pragmatique centrée sur l'action, le 'savoir-agir' et le transfert des acquis dans différents contextes. Évaluation basée sur la capacité à mobiliser des ressources.",
-                theoriciens: [
-                    "Philippe Perrenoud (compétences)",
-                    "Guy Le Boterf (ingénierie des compétences)",
-                    "Pédagogie par objectifs (PPO)",
-                    "Référentiels de compétences professionnelles"
-                ],
+                name: "Pédagogie par Compétences",
+                color: "#c7ceea",
+                description: "L'apprentissage vise le développement de compétences professionnelles mobilisables en situation réelle. Approche pragmatique centrée sur l'action et le 'savoir-agir'.",
+                theoriciens: ["Philippe Perrenoud", "Guy Le Boterf", "Pédagogie par objectifs"],
+                year: "1990s-2000s",
                 indicators: [
-                    "Vous définissez des objectifs en termes de compétences à acquérir",
-                    "Vous créez des situations proches de la réalité professionnelle",
+                    "Vous définissez des objectifs en termes de compétences",
+                    "Vous créez des situations proches de la réalité",
                     "Vous travaillez sur le 'savoir-agir' en situation",
-                    "Vous évaluez la capacité à mobiliser des ressources (savoirs, savoir-faire, savoir-être)",
-                    "Vous favorisez le transfert des apprentissages vers d'autres contextes",
-                    "Vous vous référez à un référentiel de compétences"
+                    "Vous évaluez la mobilisation de ressources",
+                    "Vous favorisez le transfert",
+                    "Vous vous référez à un référentiel"
                 ],
                 references: [
-                    "Carré, P. (2019). Psychopédagogie des adultes. Psychologies pour la formation, Dunod. https://shs.cairn.info/",
-                    "Perrenoud, P. (1991). Pour une approche pragmatique de l'évaluation formative. Mesure et évaluation, vol. 13, n° 4",
-                    "Développée dans les référentiels de formation professionnelle"
+                    "Carré, P. (2019). Psychopédagogie des adultes. Dunod.",
+                    "Perrenoud, P. (1991). Pour une approche pragmatique de l'évaluation formative."
+                ],
+                recommendations: [
+                    "Définissez des compétences mesurables et observables",
+                    "Créez des mises en situation réelles",
+                    "Permettez le transfert vers de nouveaux contextes",
+                    "Évaluez la mobilisation de ressources plutôt que juste les savoirs"
                 ]
             }
         };
 
-        // Questions de précision
+        const compatibilityMatrix = {
+            "transmissif-behaviorisme": { strength: "Très forte", reason: "Tous deux structurent l'apprentissage de manière linéaire et observable" },
+            "behaviorisme-competences": { strength: "Forte", reason: "Les deux décomposent en objectifs clairs et observables" },
+            "humaniste-systemique": { strength: "Très forte", reason: "L'écoute empathique + analyse relationnelle crée un accompagnement holistique" },
+            "socioconstructivisme-humaniste": { strength: "Forte", reason: "Respect de la personne et apprentissage par les pairs se renforcent" },
+            "cognitivisme_tcc-humaniste": { strength: "Très forte", reason: "Travail sur les pensées dans un climat d'acceptation" },
+            "systemique-socioconstructivisme": { strength: "Forte", reason: "Les deux mettent l'interaction au cœur de l'apprentissage" }
+        };
+
         const questions = [
             {
                 id: "posture",
@@ -754,65 +932,65 @@
                     { text: "Expert qui transmet son savoir", courants: ["transmissif"], weight: 3 },
                     { text: "Facilitateur qui accompagne sans diriger", courants: ["humaniste"], weight: 3 },
                     { text: "Observateur et analyste des interactions", courants: ["systemique"], weight: 3 },
-                    { text: "Guide qui structure l'apprentissage progressif", courants: ["behaviorisme", "competences"], weight: 2 },
-                    { text: "Médiateur entre pairs qui apprennent ensemble", courants: ["socioconstructivisme"], weight: 3 }
+                    { text: "Guide qui structure l'apprentissage", courants: ["behaviorisme", "competences"], weight: 2 },
+                    { text: "Médiateur entre pairs", courants: ["socioconstructivisme"], weight: 3 }
                 ]
             },
             {
                 id: "objectif",
-                question: "Quel était l'objectif principal de la situation ?",
+                question: "Quel était l'objectif principal ?",
                 options: [
-                    { text: "Transmettre un savoir-faire technique précis", courants: ["transmissif"], weight: 3 },
-                    { text: "Développer l'autonomie et la confiance en soi", courants: ["humaniste"], weight: 3 },
-                    { text: "Modifier un comportement spécifique observable", courants: ["behaviorisme"], weight: 3 },
-                    { text: "Améliorer les interactions et la communication dans l'équipe", courants: ["systemique"], weight: 3 },
-                    { text: "Construire des apprentissages par l'échange entre pairs", courants: ["socioconstructivisme"], weight: 3 },
-                    { text: "Développer une compétence mobilisable en situation", courants: ["competences"], weight: 3 }
+                    { text: "Transmettre un savoir-faire technique", courants: ["transmissif"], weight: 3 },
+                    { text: "Développer autonomie et confiance", courants: ["humaniste"], weight: 3 },
+                    { text: "Modifier un comportement observable", courants: ["behaviorisme"], weight: 3 },
+                    { text: "Améliorer les interactions", courants: ["systemique"], weight: 3 },
+                    { text: "Construire par l'échange entre pairs", courants: ["socioconstructivisme"], weight: 3 },
+                    { text: "Développer une compétence", courants: ["competences"], weight: 3 }
                 ]
             },
             {
                 id: "methode",
                 question: "Quelle méthode avez-vous principalement utilisée ?",
                 options: [
-                    { text: "Démonstration puis imitation et reproduction", courants: ["transmissif", "behaviorisme"], weight: 2 },
-                    { text: "Écoute active, questionnement non-directif", courants: ["humaniste"], weight: 3 },
-                    { text: "Exercices répétés avec renforcement positif", courants: ["behaviorisme"], weight: 3 },
-                    { text: "Travail en groupe, échanges et confrontation d'idées", courants: ["socioconstructivisme"], weight: 3 },
-                    { text: "Analyse des interactions et recadrage de la communication", courants: ["systemique"], weight: 3 },
-                    { text: "Mise en situation réelle proche du contexte professionnel", courants: ["competences"], weight: 3 }
+                    { text: "Démonstration puis imitation", courants: ["transmissif", "behaviorisme"], weight: 2 },
+                    { text: "Écoute active, questionnement", courants: ["humaniste"], weight: 3 },
+                    { text: "Exercices répétés avec renforcement", courants: ["behaviorisme"], weight: 3 },
+                    { text: "Travail en groupe et échanges", courants: ["socioconstructivisme"], weight: 3 },
+                    { text: "Analyse des interactions", courants: ["systemique"], weight: 3 },
+                    { text: "Mise en situation réelle", courants: ["competences"], weight: 3 }
                 ]
             },
             {
                 id: "relation",
-                question: "Comment caractériseriez-vous la relation établie ?",
+                question: "Comment caractériseriez-vous la relation ?",
                 options: [
-                    { text: "Relation verticale expert-apprenant (je sais, tu apprends)", courants: ["transmissif"], weight: 2 },
-                    { text: "Relation horizontale de confiance et d'écoute", courants: ["humaniste"], weight: 3 },
-                    { text: "Focus sur le système relationnel et les interactions globales", courants: ["systemique"], weight: 3 },
-                    { text: "Relation de collaboration entre pairs qui co-construisent", courants: ["socioconstructivisme"], weight: 3 },
-                    { text: "Relation de guidance avec feedbacks réguliers", courants: ["behaviorisme", "competences"], weight: 2 }
+                    { text: "Verticale expert-apprenant", courants: ["transmissif"], weight: 2 },
+                    { text: "Horizontale de confiance", courants: ["humaniste"], weight: 3 },
+                    { text: "Focus sur les interactions globales", courants: ["systemique"], weight: 3 },
+                    { text: "Collaboration entre pairs", courants: ["socioconstructivisme"], weight: 3 },
+                    { text: "Guidance avec feedbacks", courants: ["behaviorisme", "competences"], weight: 2 }
                 ]
             },
             {
                 id: "erreur",
                 question: "Comment avez-vous abordé les erreurs ?",
                 options: [
-                    { text: "Correction immédiate pour éviter les mauvaises habitudes", courants: ["transmissif", "behaviorisme"], weight: 2 },
-                    { text: "Erreur comme source précieuse d'apprentissage et de réflexion", courants: ["humaniste", "socioconstructivisme"], weight: 2 },
-                    { text: "Analyse des patterns interactionnels qui mènent à l'erreur", courants: ["systemique"], weight: 3 },
-                    { text: "Ajustement dans l'action pour développer la compétence", courants: ["competences"], weight: 2 },
-                    { text: "Restructuration cognitive des croyances autour de l'erreur", courants: ["cognitivisme_tcc"], weight: 3 }
+                    { text: "Correction immédiate", courants: ["transmissif", "behaviorisme"], weight: 2 },
+                    { text: "Source d'apprentissage", courants: ["humaniste", "socioconstructivisme"], weight: 2 },
+                    { text: "Analyse des patterns", courants: ["systemique"], weight: 3 },
+                    { text: "Ajustement pour compétence", courants: ["competences"], weight: 2 },
+                    { text: "Restructuration cognitive", courants: ["cognitivisme_tcc"], weight: 3 }
                 ]
             },
             {
                 id: "communication",
                 question: "Quel aspect de la communication était important ?",
                 options: [
-                    { text: "Clarté des consignes verbales données", courants: ["transmissif"], weight: 2 },
-                    { text: "Écoute empathique et expression des ressentis", courants: ["humaniste"], weight: 3 },
-                    { text: "Observation des patterns de communication et boucles relationnelles", courants: ["systemique"], weight: 3 },
-                    { text: "Échanges verbaux entre bénéficiaires pour co-construire", courants: ["socioconstructivisme"], weight: 3 },
-                    { text: "Feedbacks précis sur les comportements", courants: ["behaviorisme"], weight: 2 }
+                    { text: "Clarté des consignes", courants: ["transmissif"], weight: 2 },
+                    { text: "Écoute empathique", courants: ["humaniste"], weight: 3 },
+                    { text: "Patterns relationnels", courants: ["systemique"], weight: 3 },
+                    { text: "Échanges entre pairs", courants: ["socioconstructivisme"], weight: 3 },
+                    { text: "Feedbacks précis", courants: ["behaviorisme"], weight: 2 }
                 ]
             }
         ];
@@ -822,451 +1000,291 @@
 
         function analyzerInitial() {
             situationText = document.getElementById('situationDescription').value.trim();
-            
-            if (!situationText) {
-                alert("Merci de décrire votre situation avant de continuer.");
+            if (!situationText || situationText.length < 50) {
+                alert("Veuillez décrire votre situation avec plus de détails.");
                 return;
             }
-
-            if (situationText.length < 50) {
-                alert("Votre description semble un peu courte. Pour une analyse plus précise, essayez de donner plus de détails sur la situation.");
-                return;
-            }
-
             document.getElementById('step1').style.display = 'none';
             document.getElementById('questions').style.display = 'block';
-            
             renderQuestions();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function analyzeKeywords(text) {
             const keywords = {
-                transmissif: ['montrer', 'expliquer', 'démonstration', 'enseigner', 'transmettre', 'apprendre à', 'corriger'],
-                behaviorisme: ['répéter', 'répétition', 'encourager', 'féliciter', 'récompense', 'comportement', 'automatisme', 'renforcer', 'conditionner'],
-                cognitivisme_tcc: ['penser', 'pensée', 'croyance', 'émotion', 'stratégie', 'résolution', 'cognitive'],
-                humaniste: ['écouter', 'écoute', 'confiance', 'autonomie', 'ressenti', 'empathie', 'accompagner', 'respecter', 'accepter', 'bienveillance'],
-                systemique: ['interaction', 'communica', 'relation', 'équipe', 'dynamique', 'contexte', 'environnement', 'système', 'circulaire', 'pattern'],
-                socioconstructivisme: ['groupe', 'collaboration', 'échange', 'collectif', 'pairs', 'ensemble', 'coopération', 'débat', 'confrontation'],
-                competences: ['compétence', 'situation réelle', 'action', 'professionnel', 'pratique', 'transfert', 'mobiliser']
+                transmissif: ['montrer', 'expliquer', 'démonstration', 'enseigner', 'transmettre'],
+                behaviorisme: ['répéter', 'encourager', 'féliciter', 'récompense', 'comportement'],
+                cognitivisme_tcc: ['penser', 'croyance', 'émotion', 'stratégie', 'résolution'],
+                humaniste: ['écouter', 'confiance', 'autonomie', 'empathie', 'accompagner'],
+                systemique: ['interaction', 'communication', 'relation', 'équipe', 'dynamique'],
+                socioconstructivisme: ['groupe', 'collaboration', 'échange', 'pairs', 'ensemble'],
+                competences: ['compétence', 'situation réelle', 'action', 'professionnel']
             };
-            
             const scores = {};
-            
             for (const [courant, words] of Object.entries(keywords)) {
-                scores[courant] = words.filter(word => text.includes(word)).length;
+                scores[courant] = words.filter(w => text.includes(w)).length;
             }
-            
             return scores;
         }
 
         function renderQuestions() {
             const container = document.getElementById('questionsContainer');
             container.innerHTML = '';
-            
-            questions.forEach((q, index) => {
-                const questionDiv = document.createElement('div');
-                questionDiv.className = 'question-block';
-                questionDiv.innerHTML = `
-                    <h3>${index + 1}. ${q.question}</h3>
-                    <div class="options" id="options-${q.id}"></div>
-                `;
-                container.appendChild(questionDiv);
-                
-                const optionsDiv = document.getElementById(`options-${q.id}`);
-                q.options.forEach((option, optIndex) => {
-                    const button = document.createElement('button');
-                    button.className = 'option-button';
-                    button.textContent = option.text;
-                    button.onclick = () => selectOption(q.id, optIndex, button);
-                    optionsDiv.appendChild(button);
+            questions.forEach((q, i) => {
+                const div = document.createElement('div');
+                div.className = 'question-block';
+                div.innerHTML = `<h3>${i + 1}. ${q.question}</h3><div class="options" id="options-${q.id}"></div>`;
+                container.appendChild(div);
+                const opts = document.getElementById(`options-${q.id}`);
+                q.options.forEach((opt, j) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-button';
+                    btn.textContent = opt.text;
+                    btn.onclick = () => selectOption(q.id, j, btn);
+                    opts.appendChild(btn);
                 });
             });
         }
 
-        function selectOption(questionId, optionIndex, button) {
-            const optionsDiv = button.parentElement;
-            Array.from(optionsDiv.children).forEach(btn => {
-                btn.classList.remove('selected');
-            });
-
-            button.classList.add('selected');
-
-            const question = questions.find(q => q.id === questionId);
-            answers[questionId] = question.options[optionIndex];
-
+        function selectOption(qId, idx, btn) {
+            btn.parentElement.querySelectorAll('.option-button').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            answers[qId] = questions.find(q => q.id === qId).options[idx];
             updateProgress();
         }
 
         function updateProgress() {
-            const answered = Object.keys(answers).length;
-            const total = questions.length;
-            const pct = Math.round(answered / total * 100);
+            const pct = Math.round(Object.keys(answers).length / questions.length * 100);
             const inner = document.getElementById('progressInner');
             const label = document.getElementById('progressLabel');
             if (inner) inner.style.width = pct + '%';
-            if (label) label.textContent = `${answered} / ${total} questions répondues`;
+            if (label) label.textContent = `${Object.keys(answers).length} / ${questions.length} questions répondues`;
         }
 
         function generateResults() {
             if (Object.keys(answers).length < questions.length) {
-                alert("Merci de répondre à toutes les questions avant de continuer.");
+                alert("Veuillez répondre à toutes les questions.");
                 return;
             }
-
             const scores = {};
-            
-            for (const courantKey in courants) {
-                scores[courantKey] = 0;
+            for (const k in courants) scores[k] = 0;
+            const kw = analyzeKeywords(situationText.toLowerCase());
+            for (const [c, s] of Object.entries(kw)) scores[c] += s;
+            for (const a of Object.values(answers)) {
+                for (const c of a.courants) scores[c] += a.weight;
             }
-
-            const keywordScores = analyzeKeywords(situationText.toLowerCase());
-            for (const [courant, score] of Object.entries(keywordScores)) {
-                scores[courant] += score;
-            }
-
-            for (const answer of Object.values(answers)) {
-                for (const courant of answer.courants) {
-                    scores[courant] += answer.weight;
-                }
-            }
-
-            const sortedCourants = Object.entries(scores)
-                .filter(([_, score]) => score > 0)
-                .sort((a, b) => b[1] - a[1])
-                .map(([courantKey, score]) => ({
-                    key: courantKey,
-                    score: score,
-                    data: courants[courantKey]
-                }));
-
-            displayResults(sortedCourants);
+            const sorted = Object.entries(scores).filter(([_, s]) => s > 0).sort((a, b) => b[1] - a[1])
+                .map(([k, s]) => ({ key: k, score: s, data: courants[k] }));
+            displayResults(sorted);
         }
 
-        function displayResults(sortedCourants) {
+        function displayResults(sorted) {
             document.getElementById('questions').style.display = 'none';
             document.getElementById('results').style.display = 'block';
-
             const container = document.getElementById('resultsContainer');
             container.innerHTML = '';
-
-            if (sortedCourants.length === 0) {
-                container.innerHTML = '<p style="text-align:center; color:#666;">Aucun courant identifié. Essayez de fournir plus de détails dans votre description.</p>';
+            if (!sorted.length) {
+                container.innerHTML = '<p style="text-align:center;">Aucun courant identifié.</p>';
                 return;
             }
-
-            const maxScore = sortedCourants[0].score;
-            
-            sortedCourants.forEach((courant, index) => {
+            const maxScore = sorted[0].score;
+            sorted.forEach((c, i) => {
+                const pct = Math.round(c.score / maxScore * 100);
+                const intensite = pct >= 80 ? '🔥 Dominant' : pct >= 50 ? '⭐ Présent' : '💫 Identifié';
                 const card = document.createElement('div');
                 card.className = 'courant-card';
-                
-                let intensite = '';
-                const scorePercent = (courant.score / maxScore * 100);
-                
-                if (scorePercent >= 80) {
-                    intensite = '🔥 Dominant';
-                } else if (scorePercent >= 50) {
-                    intensite = '⭐ Présent';
-                } else {
-                    intensite = '💫 Identifié';
-                }
-
-                const indicatorsHTML = `
-                    <div class="indicators">
-                        <h4>📌 Indicateurs dans votre pratique :</h4>
-                        <ul>
-                            ${courant.data.indicators.map(ind => `<li>${ind}</li>`).join('')}
-                        </ul>
-                    </div>
-                `;
-
-                const theoriciensHTML = courant.data.theoriciens.length > 0 ? `
-                    <div class="theoriciens">
-                        <h4>👤 Théoriciens / Références :</h4>
-                        <p>${courant.data.theoriciens.join(' • ')}</p>
-                    </div>
-                ` : '';
-
-                const referencesHTML = courant.data.references.length > 0 ? `
-                    <div class="references">
-                        <h4>📚 Références académiques vérifiées (Cairn.info, sources HES-SO) :</h4>
-                        ${courant.data.references.map(ref => `<p>• ${ref}</p>`).join('')}
-                    </div>
-                ` : '';
-
                 card.innerHTML = `
-                    <div class="courant-header">
-                        <div class="courant-name">${courant.data.name}</div>
+                    <div class="courant-header" onclick="toggleCard(this)">
+                        <div class="courant-name">${c.data.name}</div>
                         <div class="courant-score">${intensite}</div>
+                        <div class="courant-toggle">▼</div>
                     </div>
-                    <div class="courant-description">
-                        ${courant.data.description}
-                    </div>
-                    ${indicatorsHTML}
-                    ${theoriciensHTML}
-                    ${referencesHTML}
-                    <div style="margin-top: 20px; padding-top: 15px; border-top: 2px solid #e0e0e0; color: #667eea; font-weight: bold;">
-                        💡 Pourquoi ce courant a été identifié : Vos réponses et votre description correspondent à ${courant.score} indicateurs de ce courant pédagogique.
+                    <div class="courant-body">
+                        <div class="courant-description">${c.data.description}</div>
+                        <div class="indicators">
+                            <h4>📌 Indicateurs :</h4>
+                            <ul>${c.data.indicators.map(ind => `<li>${ind}</li>`).join('')}</ul>
+                        </div>
+                        <div class="theoriciens">
+                            <h4>👤 Théoriciens :</h4>
+                            <p>${c.data.theoriciens.join(' • ')}</p>
+                        </div>
+                        <div class="recommendations">
+                            <h4 style="color: #10b981; margin-top: 15px;">💡 Actions recommandées :</h4>
+                            <ul style="padding-left: 20px;">${c.data.recommendations.map(r => `<li style="margin-bottom:8px; color:#555;">${r}</li>`).join('')}</ul>
+                        </div>
                     </div>
                 `;
-                
                 container.appendChild(card);
             });
 
-            // Radar chart — deferred to next frame so the DOM is laid out
+            // Radar
             requestAnimationFrame(() => {
-                try { drawRadarChart(sortedCourants); } catch(e) { console.warn('Radar chart:', e); }
+                try { drawRadarChart(sorted); } catch (e) { console.warn('Radar:', e); }
             });
 
-            // Save to localStorage
-            saveToLocalStorage(sortedCourants);
-
-            // Synthesis section
-            if (sortedCourants.length > 0) {
-                const synthesisWrapper = document.createElement('div');
-                synthesisWrapper.innerHTML = `
-                    <div class="synthesis-section">
-                        <h3 class="synthesis-section-title">📝 Synthèse de l'Analyse Pédagogique</h3>
-                        <div class="synthesis-paragraphs">
-                            ${generateSynthesisText(sortedCourants).map(para => `
-                                <p class="synthesis-paragraph">${para}</p>
-                            `).join('')}
-                        </div>
-                        <h4 class="synthesis-subtitle">📊 Tableau de Synthèse des Courants Identifiés</h4>
-                        ${generateSynthesisTable(sortedCourants)}
-                    </div>
-                `;
-                container.appendChild(synthesisWrapper.firstElementChild);
-            }
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function generateSynthesisText(sortedCourants) {
-            if (sortedCourants.length === 0) return [];
-
-            const maxScore = sortedCourants[0].score;
-            const dominant = sortedCourants.filter(c => (c.score / maxScore * 100) >= 80);
-            const present   = sortedCourants.filter(c => (c.score / maxScore * 100) >= 50 && (c.score / maxScore * 100) < 80);
-
-            const paragraphs = [];
-
-            // Paragraph 1 : dominant approach(es)
-            if (dominant.length === 1) {
-                paragraphs.push(
-                    `L'analyse de votre situation révèle une orientation pédagogique principalement ancrée dans la <strong>${dominant[0].data.name}</strong>. ` +
-                    `Cette approche constitue le fil directeur dominant de votre pratique d'accompagnement, structurant la manière dont vous interagissez avec les bénéficiaires à La Pallanterie dans l'atelier conditioning-logistique.`
-                );
-            } else if (dominant.length > 1) {
-                const names = dominant.map(c => `<strong>${c.data.name}</strong>`).join(' et la ');
-                paragraphs.push(
-                    `L'analyse de votre situation révèle une posture pédagogique hybride, combinant de façon dominante la ${names}. ` +
-                    `Cette configuration plurielle témoigne d'une pratique professionnelle intégrative qui mobilise plusieurs référentiels théoriques de manière complémentaire, reflétant la complexité des situations d'accompagnement rencontrées.`
-                );
-            }
-
-            // Paragraph 2 : complementary approaches
-            if (present.length > 0) {
-                const presentNames = present.map(c => `<strong>${c.data.name}</strong>`).join(', ');
-                paragraphs.push(
-                    `En complémentarité, des éléments de ${presentNames} enrichissent votre palette d'intervention. ` +
-                    `Cette articulation entre courants pédagogiques illustre la richesse de la pratique professionnelle en accompagnement socio-professionnel, où différentes postures coexistent et se renforcent mutuellement selon les besoins spécifiques des bénéficiaires CEA et le contexte de l'atelier.`
-                );
-            } else if (sortedCourants.length > 1) {
-                const secondaryNames = sortedCourants.slice(1, 3).map(c => `<strong>${c.data.name}</strong>`).join(' et ');
-                paragraphs.push(
-                    `On note également la présence, à un niveau secondaire, d'influences de ${secondaryNames}. ` +
-                    `Ces éléments complémentaires viennent nuancer et enrichir la pratique dominante, témoignant d'une capacité à adapter sa posture pédagogique selon les besoins rencontrés.`
-                );
-            }
-
-            // Paragraph 3 : professional development
-            const mainCourant = sortedCourants[0];
-            let para3 = `Sur le plan du développement professionnel, cette analyse invite à prendre conscience de l'ancrage théorique de vos pratiques d'accompagnement. Approfondir les fondements de la <strong>${mainCourant.data.name}</strong>`;
-            if (sortedCourants.length > 1) {
-                const secondNames = sortedCourants
-                    .slice(1, Math.min(3, sortedCourants.length))
-                    .map(c => c.data.name)
-                    .join(' et de la ');
-                para3 += ` et explorer davantage les apports de la ${secondNames}`;
-            }
-            para3 += ` pourrait renforcer la cohérence et l'efficacité de vos interventions. La réflexivité sur ses propres pratiques pédagogiques constitue un levier essentiel pour l'amélioration continue de l'accompagnement dans le cadre de la formation MSP ARPIH.`;
-            paragraphs.push(para3);
-
-            return paragraphs;
-        }
-
-        function generateSynthesisTable(sortedCourants) {
-            if (sortedCourants.length === 0) return '';
-
-            const maxScore = sortedCourants[0].score;
-
-            const rows = sortedCourants.map(courant => {
-                const scorePercent = Math.round(courant.score / maxScore * 100);
-                let intensite, badgeClass;
-
-                if (scorePercent >= 80) {
-                    intensite  = '🔥 Dominant';
-                    badgeClass = 'intensite-dominant';
-                } else if (scorePercent >= 50) {
-                    intensite  = '⭐ Présent';
-                    badgeClass = 'intensite-present';
-                } else {
-                    intensite  = '💫 Identifié';
-                    badgeClass = 'intensite-identifie';
-                }
-
-                const mainTheoriciens = courant.data.theoriciens.slice(0, 2).join('<br>');
-                const mainIndicators  = courant.data.indicators.slice(0, 2);
-
-                return `
-                    <tr>
-                        <td><strong>${courant.data.name}</strong></td>
-                        <td>
-                            <span class="intensite-badge ${badgeClass}">${intensite}</span>
-                            <div style="margin-top:6px; display:flex; align-items:center; gap:6px;">
-                                <div class="score-bar-container">
-                                    <div class="score-bar-fill" style="width:${scorePercent}%;"></div>
-                                </div>
-                                <small style="color:#888;">${scorePercent}%</small>
-                            </div>
-                        </td>
-                        <td style="font-size:0.85em;">${mainTheoriciens}</td>
-                        <td>
-                            <ul style="padding-left:16px; margin:0;">
-                                ${mainIndicators.map(ind => `<li style="margin-bottom:4px;">${ind}</li>`).join('')}
-                            </ul>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-
-            return `
-                <div class="synthesis-table-container">
-                    <table class="synthesis-table">
-                        <thead>
-                            <tr>
-                                <th style="width:22%;">Courant Pédagogique</th>
-                                <th style="width:18%;">Intensité &amp; Score</th>
-                                <th style="width:25%;">Théoriciens Principaux</th>
-                                <th style="width:35%;">Manifestations dans Votre Pratique</th>
-                            </tr>
-                        </thead>
-                        <tbody>${rows}</tbody>
-                    </table>
+            // Synthesis
+            const synth = document.createElement('div');
+            synth.innerHTML = `
+                <div class="synthesis-section">
+                    <h3 class="synthesis-section-title">📝 Synthèse</h3>
+                    ${generateSynthesisText(sorted).map(p => `<p class="synthesis-paragraph">${p}</p>`).join('')}
+                    <button class="copy-synthesis-btn" onclick="copySynthesis('${generateSynthesisText(sorted).join('\n\n')}')">📋 Copier la synthèse</button>
+                    <h4 class="synthesis-subtitle">Tableau de synthèse</h4>
+                    ${generateSynthesisTable(sorted)}
                 </div>
             `;
-        }
+            container.appendChild(synth.firstChild);
 
-        function reset() {
-            document.getElementById('situationDescription').value = '';
-            situationText = "";
-            answers = {};
+            // Recommendations Section
+            const rec = document.createElement('div');
+            rec.innerHTML = `
+                <div class="recommendations-section">
+                    <h3 class="recommendations-title">🎯 Recommandations Pratiques</h3>
+                    <div>${sorted.slice(0, 2).map(c => `
+                        <h4 style="color: #333; margin-top: 15px; font-weight: 600;">Pour la <strong>${c.data.name}</strong> :</h4>
+                        <ul style="padding-left: 20px;">${c.data.recommendations.map(r => `<li class="recommendation-item" style="list-style: none; margin-bottom: 8px;">${r}</li>`).join('')}</ul>
+                    `).join('')}</div>
+                </div>
+            `;
+            container.appendChild(rec.firstChild);
 
-            // Reset progress bar
-            const inner = document.getElementById('progressInner');
-            const label = document.getElementById('progressLabel');
-            if (inner) inner.style.width = '0%';
-            if (label) label.textContent = '0 / 6 questions répondues';
+            // Compatibility
+            const compat = document.createElement('div');
+            compat.innerHTML = `
+                <div class="compatibility-section">
+                    <h3 class="compatibility-title">🔗 Compatibilité entre courants</h3>
+                    <div class="compatibility-grid">${Object.entries(compatibilityMatrix).map(([pair, data]) => `
+                        <div class="compat-pair">
+                            <div class="compat-pair-names">${pair.split('-').map(k => courants[k]?.name || k).join(' + ')}</div>
+                            <div class="compat-strength" style="color: #10b981; font-weight: 600;">${data.strength}</div>
+                            <div class="compat-strength">${data.reason}</div>
+                        </div>
+                    `).join('')}</div>
+                </div>
+            `;
+            container.appendChild(compat.firstChild);
 
-            localStorage.removeItem('lastAnalysis');
+            // Timeline
+            const timeline = document.createElement('div');
+            timeline.innerHTML = `
+                <div class="timeline-section">
+                    <h3 class="timeline-title">📅 Chronologie des théories</h3>
+                    <div class="timeline">${Object.entries(courants).sort((a, b) => {
+                        const getYear = (y) => {
+                            if (y.includes('-')) return parseInt(y.split('-')[0]);
+                            return parseInt(y.split('s')[0] || '1900');
+                        };
+                        return getYear(a[1].year) - getYear(b[1].year);
+                    }).map(([k, c]) => `
+                        <div class="timeline-item">
+                            <div class="timeline-year">${c.year}</div>
+                            <div style="font-weight: 600; color: #333;">${c.name}</div>
+                            <div class="timeline-theorist">${c.theoriciens.slice(0, 1).join(', ')}</div>
+                        </div>
+                    `).join('')}</div>
+                </div>
+            `;
+            container.appendChild(timeline.firstChild);
 
-            document.getElementById('step1').style.display = 'block';
-            document.getElementById('questions').style.display = 'none';
-            document.getElementById('results').style.display = 'none';
-
+            saveToLocalStorage(sorted);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // ── Radar Chart ──────────────────────────────────────────────────────
-        function drawRadarChart(sortedCourants) {
-            const canvas = document.getElementById('radarCanvas');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
+        function toggleCard(header) {
+            header.classList.toggle('collapsed');
+        }
 
-            const allKeys = Object.keys(courants);
-            const N = allKeys.length;
+        function generateSynthesisText(sorted) {
+            if (!sorted.length) return [];
+            const maxScore = sorted[0].score;
+            const dom = sorted.filter(c => c.score / maxScore * 100 >= 80);
+            const pres = sorted.filter(c => c.score / maxScore * 100 >= 50 && c.score / maxScore * 100 < 80);
+            const para = [];
+            if (dom.length === 1) {
+                para.push(`Votre situation est principalement ancrée dans la <strong>${dom[0].data.name}</strong>.`);
+            } else if (dom.length > 1) {
+                para.push(`Vous combinez dominante les approches <strong>${dom.map(c => c.data.name).join(' et ')}</strong>.`);
+            }
+            if (pres.length) {
+                para.push(`En complémentarité, des éléments de <strong>${pres.map(c => c.data.name).join(', ')}</strong> enrichissent votre pratique.`);
+            }
+            para.push(`Cette analyse révèle une pratique professionnelle riche et adaptée. Approfondir les fondements théoriques pourrait renforcer votre efficacité et votre réflexivité pédagogique.`);
+            return para;
+        }
+
+        function generateSynthesisTable(sorted) {
+            const maxScore = sorted[0].score;
+            const rows = sorted.map(c => {
+                const pct = Math.round(c.score / maxScore * 100);
+                return `<tr>
+                    <td><strong>${c.data.name}</strong></td>
+                    <td><span style="background: #667eea; color: white; padding: 4px 12px; border-radius: 12px; font-size: 0.85em;">${pct}%</span></td>
+                    <td style="font-size: 0.85em;">${c.data.theoriciens.slice(0, 2).join(', ')}</td>
+                </tr>`;
+            }).join('');
+            return `<div class="synthesis-table-container">
+                <table class="synthesis-table">
+                    <thead><tr><th>Courant</th><th>Score</th><th>Théoriciens</th></tr></thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>`;
+        }
+
+        function drawRadarChart(sorted) {
+            const c = document.getElementById('radarCanvas');
+            if (!c) return;
+            const ctx = c.getContext('2d');
+            const keys = Object.keys(courants);
+            const N = keys.length;
             const scoreMap = {};
-            sortedCourants.forEach(c => { scoreMap[c.key] = c.score; });
-            const maxScore = Math.max(...sortedCourants.map(c => c.score), 1);
-
-            // Responsive canvas size (fallback to 460 if layout not ready)
-            const parentW = canvas.parentElement ? canvas.parentElement.clientWidth : 0;
-            const size = Math.max(300, Math.min(500, parentW > 100 ? parentW - 40 : 460));
-            canvas.width  = size;
-            canvas.height = Math.round(size * 0.82);
-
-            const W = canvas.width;
-            const H = canvas.height;
-            const cx = W / 2;
-            const cy = H / 2 + 10;
-            const R  = Math.min(cx, cy) - 70;
-
+            sorted.forEach(s => { scoreMap[s.key] = s.score; });
+            const maxScore = Math.max(...sorted.map(s => s.score), 1);
+            const W = 500, H = 410;
+            const cx = W / 2, cy = H / 2 + 10;
+            const R = Math.min(cx, cy) - 70;
             ctx.clearRect(0, 0, W, H);
-
-            // Grid polygons (4 levels)
-            for (let level = 1; level <= 4; level++) {
-                const r = R * level / 4;
+            for (let l = 1; l <= 4; l++) {
+                const r = R * l / 4;
                 ctx.beginPath();
-                allKeys.forEach((_, i) => {
-                    const angle = (2 * Math.PI * i / N) - Math.PI / 2;
-                    const x = cx + r * Math.cos(angle);
-                    const y = cy + r * Math.sin(angle);
+                keys.forEach((_, i) => {
+                    const a = (2 * Math.PI * i / N) - Math.PI / 2;
+                    const x = cx + r * Math.cos(a);
+                    const y = cy + r * Math.sin(a);
                     i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
                 });
                 ctx.closePath();
                 ctx.strokeStyle = '#dde0ff';
-                ctx.lineWidth = 1;
                 ctx.stroke();
-                if (level === 4) {
-                    ctx.fillStyle = 'rgba(102,126,234,0.04)';
-                    ctx.fill();
-                }
             }
-
-            // Axes + labels
             const shortNames = {
-                transmissif:       'Transmissif',
-                behaviorisme:      'Béhaviorisme',
-                cognitivisme_tcc:  'TCC',
-                humaniste:         'Humaniste',
-                systemique:        'Systémique',
-                socioconstructivisme: 'Socioconstr.',
-                competences:       'Compétences'
+                transmissif: 'Transmissif', behaviorisme: 'Béhaviorisme', cognitivisme_tcc: 'TCC',
+                humaniste: 'Humaniste', systemique: 'Systémique', socioconstructivisme: 'Socio.',
+                competences: 'Compétences'
             };
-
-            allKeys.forEach((key, i) => {
-                const angle  = (2 * Math.PI * i / N) - Math.PI / 2;
-                const xEdge  = cx + R * Math.cos(angle);
-                const yEdge  = cy + R * Math.sin(angle);
-
-                // Axis line
+            keys.forEach((k, i) => {
+                const a = (2 * Math.PI * i / N) - Math.PI / 2;
+                const xEdge = cx + R * Math.cos(a), yEdge = cy + R * Math.sin(a);
                 ctx.beginPath();
                 ctx.moveTo(cx, cy);
                 ctx.lineTo(xEdge, yEdge);
                 ctx.strokeStyle = '#ccd0f0';
-                ctx.lineWidth = 1;
                 ctx.stroke();
-
-                // Label
-                const labelR = R + 52;
-                const lx = cx + labelR * Math.cos(angle);
-                const ly = cy + labelR * Math.sin(angle);
+                const labelR = R + 50;
+                const lx = cx + labelR * Math.cos(a);
+                const ly = cy + labelR * Math.sin(a);
                 ctx.fillStyle = '#555';
-                ctx.font = `bold 11px 'Segoe UI', sans-serif`;
+                ctx.font = "bold 11px 'DM Sans'";
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillText(shortNames[key] || key, lx, ly);
+                ctx.fillText(shortNames[k] || k, lx, ly);
             });
-
-            // Data polygon
             ctx.beginPath();
-            allKeys.forEach((key, i) => {
-                const angle = (2 * Math.PI * i / N) - Math.PI / 2;
-                const r = R * (scoreMap[key] || 0) / maxScore;
-                const x = cx + r * Math.cos(angle);
-                const y = cy + r * Math.sin(angle);
+            keys.forEach((k, i) => {
+                const a = (2 * Math.PI * i / N) - Math.PI / 2;
+                const r = R * (scoreMap[k] || 0) / maxScore;
+                const x = cx + r * Math.cos(a);
+                const y = cy + r * Math.sin(a);
                 i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
             });
             ctx.closePath();
@@ -1275,13 +1293,11 @@
             ctx.strokeStyle = '#667eea';
             ctx.lineWidth = 2.5;
             ctx.stroke();
-
-            // Dots
-            allKeys.forEach((key, i) => {
-                const angle = (2 * Math.PI * i / N) - Math.PI / 2;
-                const r = R * (scoreMap[key] || 0) / maxScore;
-                const x = cx + r * Math.cos(angle);
-                const y = cy + r * Math.sin(angle);
+            keys.forEach((k, i) => {
+                const a = (2 * Math.PI * i / N) - Math.PI / 2;
+                const r = R * (scoreMap[k] || 0) / maxScore;
+                const x = cx + r * Math.cos(a);
+                const y = cy + r * Math.sin(a);
                 ctx.beginPath();
                 ctx.arc(x, y, 5, 0, 2 * Math.PI);
                 ctx.fillStyle = '#764ba2';
@@ -1292,70 +1308,62 @@
             });
         }
 
-        // ── LocalStorage ─────────────────────────────────────────────────────
-        function saveToLocalStorage(sortedCourants) {
-            try {
-                const now = new Date();
-                const date = now.toLocaleDateString('fr-FR', {
-                    day: '2-digit', month: '2-digit', year: 'numeric',
-                    hour: '2-digit', minute: '2-digit'
-                });
-                const data = {
-                    date,
-                    situationText,
-                    answers,
-                    sortedCourantsKeys: sortedCourants.map(c => ({ key: c.key, score: c.score }))
-                };
-                localStorage.setItem('lastAnalysis', JSON.stringify(data));
-            } catch (e) { /* localStorage may be unavailable */ }
+        function copySynthesis(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Synthèse copiée dans le presse-papiers !');
+            });
         }
 
-        function checkLocalStorage() {
+        function copyShareLink() {
+            const encoded = btoa(JSON.stringify({ situation: situationText, answers }));
+            const link = `${window.location.origin}${window.location.pathname}?analysis=${encoded}`;
+            navigator.clipboard.writeText(link);
+            alert('Lien de partage copié !');
+        }
+
+        function saveToLocalStorage(sorted) {
             try {
-                const saved = localStorage.getItem('lastAnalysis');
-                if (!saved) return;
-                const data = JSON.parse(saved);
-                const banner = document.getElementById('restoreBanner');
-                const dateSpan = document.getElementById('restoreDate');
-                if (banner && data.date) {
-                    dateSpan.textContent = data.date;
-                    banner.style.display = 'flex';
-                }
+                const data = {
+                    date: new Date().toLocaleString('fr-FR'),
+                    situationText,
+                    answers,
+                    sorted: sorted.map(c => ({ key: c.key, score: c.score }))
+                };
+                localStorage.setItem('lastAnalysis', JSON.stringify(data));
             } catch (e) {}
         }
 
-        function restoreLastAnalysis() {
+        function reset() {
+            document.getElementById('situationDescription').value = '';
+            situationText = "";
+            answers = {};
+            document.getElementById('progressInner').style.width = '0%';
+            document.getElementById('progressLabel').textContent = '0 / 6 questions répondues';
+            localStorage.removeItem('lastAnalysis');
+            document.getElementById('step1').style.display = 'block';
+            document.getElementById('questions').style.display = 'none';
+            document.getElementById('results').style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Load from URL on init
+        const params = new URLSearchParams(window.location.search);
+        if (params.has('analysis')) {
             try {
-                const saved = localStorage.getItem('lastAnalysis');
-                if (!saved) return;
-                const data = JSON.parse(saved);
-
-                situationText = data.situationText || '';
-                answers = data.answers || {};
+                const data = JSON.parse(atob(params.get('analysis')));
+                situationText = data.situationText;
+                answers = data.answers;
                 document.getElementById('situationDescription').value = situationText;
-
-                const sortedCourants = (data.sortedCourantsKeys || []).map(item => ({
-                    key: item.key,
-                    score: item.score,
-                    data: courants[item.key]
-                })).filter(c => c.data);
-
-                dismissRestoreBanner();
-                document.getElementById('step1').style.display = 'none';
-                displayResults(sortedCourants);
-            } catch (e) { alert("Impossible de restaurer l'analyse précédente."); }
+                const sorted = (data.sorted || []).map(c => ({ key: c.key, score: c.score, data: courants[c.key] }))
+                    .filter(c => c.data);
+                if (sorted.length) {
+                    document.getElementById('step1').style.display = 'none';
+                    document.getElementById('questions').style.display = 'none';
+                    document.getElementById('results').style.display = 'block';
+                    displayResults(sorted);
+                }
+            } catch (e) {}
         }
-
-        function dismissRestoreBanner() {
-            const banner = document.getElementById('restoreBanner');
-            if (banner) banner.style.display = 'none';
-        }
-
-        // Init
-        checkLocalStorage();
-  </script>
-<div class="toast-container" id="toast-container"></div>
-<script src="https://dmaret.github.io/footer.js"></script>
+    </script>
 </body>
 </html>
-
