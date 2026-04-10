@@ -651,6 +651,93 @@
             background: #0284c7;
         }
 
+        /* Header nav buttons */
+        .header-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .btn-back {
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            font-size: 0.85em;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            transition: color 0.2s;
+        }
+
+        .btn-back:hover {
+            color: #ffd700;
+        }
+
+        .btn-dark-mode {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            border-radius: 8px;
+            padding: 4px 10px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-dark-mode:hover {
+            background: rgba(255,255,255,0.28);
+        }
+
+        /* Dark mode */
+        body.dark-mode {
+            background: #1a1a2e;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .container {
+            background: #16213e;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+        }
+
+        body.dark-mode .courant-card {
+            background: #0f3460;
+            border-color: #1e4a7a;
+        }
+
+        body.dark-mode .courant-card summary,
+        body.dark-mode .courant-header {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode textarea {
+            background: #0f3460;
+            color: #e0e0e0;
+            border-color: #1e4a7a;
+        }
+
+        body.dark-mode .question-item {
+            background: #0f3460;
+            border-color: #1e4a7a;
+        }
+
+        body.dark-mode .synthesis-section {
+            background: #0f3460;
+        }
+
+        body.dark-mode .compatibility-table th {
+            background: #1e4a7a;
+        }
+
+        body.dark-mode .compatibility-table td {
+            background: #0f3460;
+            color: #e0e0e0;
+            border-color: #1e4a7a;
+        }
+
+        body.dark-mode .copyright-bar {
+            color: #555;
+        }
+
         /* Copyright Bar */
         .copyright-bar {
             position: fixed;
@@ -683,6 +770,10 @@
 <body>
     <div class="container">
         <div class="header">
+            <div class="header-nav">
+                <a href="https://github.com/dmaret" class="btn-back" target="_blank" rel="noopener">← Retour sur les projets</a>
+                <button class="btn-dark-mode" onclick="toggleDarkMode()" title="Basculer vision noire">🌙</button>
+            </div>
             <h1>🎓 Analyseur de Courants Pédagogiques <em>— Formation MSP ARPIH</em></h1>
             <p>Outil d'analyse pour les situations d'accompagnement à La Pallanterie</p>
         </div>
@@ -730,7 +821,7 @@
         </div>
     </div>
 
-    <div class="copyright-bar">© 2025 EPI — MSP ARPIH La Pallanterie</div>
+    <div class="copyright-bar">© 2025 David Maret — EPI MSP ARPIH La Pallanterie</div>
 
     <script>
         const courants = {
@@ -1311,6 +1402,29 @@
         function copySynthesis(text) {
             navigator.clipboard.writeText(text).then(() => {
                 alert('Synthèse copiée dans le presse-papiers !');
+            });
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const btn = document.querySelector('.btn-dark-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                btn.textContent = '☀️';
+                btn.title = 'Basculer vision claire';
+                localStorage.setItem('darkMode', '1');
+            } else {
+                btn.textContent = '🌙';
+                btn.title = 'Basculer vision noire';
+                localStorage.setItem('darkMode', '0');
+            }
+        }
+
+        // Restore dark mode preference
+        if (localStorage.getItem('darkMode') === '1') {
+            document.body.classList.add('dark-mode');
+            document.addEventListener('DOMContentLoaded', () => {
+                const btn = document.querySelector('.btn-dark-mode');
+                if (btn) { btn.textContent = '☀️'; btn.title = 'Basculer vision claire'; }
             });
         }
 
