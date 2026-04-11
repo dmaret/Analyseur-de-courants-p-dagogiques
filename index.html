@@ -1676,38 +1676,6 @@
                 }
             } catch (e) {}
         }
-    
-        /* ── Modal Conditions d'utilisation ─────────────────────────────────── */
-        function openConditionsModal(event) {
-            if (event) event.preventDefault();
-            const modal = document.getElementById("conditionsModal");
-            if (modal) {
-                modal.classList.add("show");
-                document.body.style.overflow = "hidden";
-            }
-        }
-
-        function closeConditionsModal() {
-            const modal = document.getElementById("conditionsModal");
-            if (modal) {
-                modal.classList.remove("show");
-                document.body.style.overflow = "auto";
-            }
-        }
-
-        window.addEventListener("click", function(event) {
-            const modal = document.getElementById("conditionsModal");
-            if (event.target === modal) {
-                closeConditionsModal();
-            }
-        });
-
-        window.addEventListener("keydown", function(event) {
-            if (event.key === "Escape") {
-                closeConditionsModal();
-            }
-        });
-
     </script>
 <div class="footer-legal">
   <strong>© 2025–2026 MARET Davie — Tous droits réservés.</strong> Toute reproduction ou utilisation de ce logiciel sans accord préalable écrit est interdite. <a onclick="openConditionsModal(event)">Voir les conditions d'utilisation</a>
