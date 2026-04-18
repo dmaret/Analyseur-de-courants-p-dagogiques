@@ -962,6 +962,192 @@
             to { transform: translateY(0); opacity: 1; }
         }
 
+        /* ── Historique ───────────────────────────────────────── */
+        .history-section {
+            margin-bottom: 28px;
+            background: #f8f9ff;
+            border: 1px solid #e0e4ff;
+            border-radius: 14px;
+            padding: 18px 20px;
+        }
+
+        .history-section h3 {
+            font-family: 'DM Serif Display', serif;
+            color: #667eea;
+            font-size: 1.05em;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .history-clear-btn {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.7em;
+            background: none;
+            border: 1px solid #ccc;
+            color: #999;
+            border-radius: 6px;
+            padding: 3px 10px;
+            cursor: pointer;
+        }
+
+        .history-clear-btn:hover { color: #e53e3e; border-color: #e53e3e; }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .history-item {
+            display: flex;
+            align-items: center;
+            background: white;
+            border: 1px solid #e8ebff;
+            border-radius: 10px;
+            padding: 10px 14px;
+            gap: 12px;
+        }
+
+        .history-item-info { flex: 1; min-width: 0; }
+
+        .history-item-date {
+            font-size: 0.72em;
+            color: #aaa;
+            margin-bottom: 2px;
+        }
+
+        .history-item-courant {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.88em;
+        }
+
+        .history-item-situation {
+            font-size: 0.76em;
+            color: #888;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 400px;
+        }
+
+        .history-replay-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 6px 14px;
+            font-size: 0.78em;
+            cursor: pointer;
+            white-space: nowrap;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+            flex-shrink: 0;
+            transition: background 0.2s;
+        }
+
+        .history-replay-btn:hover { background: #5a6fd6; }
+
+        /* ── Score de diversité ───────────────────────────────── */
+        .diversity-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 22px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.88em;
+            margin: 0 auto 24px;
+        }
+
+        .diversity-badge.mono   { background:#fff3cd; color:#856404; border:1px solid #ffc107; }
+        .diversity-badge.mixed  { background:#d1ecf1; color:#0c5460; border:1px solid #17a2b8; }
+        .diversity-badge.diverse{ background:#d4edda; color:#155724; border:1px solid #28a745; }
+
+        /* ── Glossaire ────────────────────────────────────────── */
+        .glossary-btn {
+            background: none;
+            border: 1px solid #667eea;
+            color: #667eea;
+            border-radius: 8px;
+            padding: 8px 18px;
+            font-size: 0.88em;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .glossary-btn:hover { background: #667eea; color: white; }
+
+        .glossary-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .glossary-overlay.open { display: flex; }
+
+        .glossary-modal {
+            background: white;
+            border-radius: 16px;
+            padding: 28px 32px;
+            max-width: 580px;
+            width: 92%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: fadeIn 0.25s ease;
+        }
+
+        .glossary-modal h3 {
+            font-family: 'DM Serif Display', serif;
+            color: #667eea;
+            font-size: 1.4em;
+            margin-bottom: 18px;
+        }
+
+        .glossary-term { border-bottom: 1px solid #f0f0f0; padding: 11px 0; }
+        .glossary-term:last-child { border-bottom: none; }
+
+        .glossary-term-name {
+            font-weight: 700;
+            color: #333;
+            font-size: 0.92em;
+            margin-bottom: 3px;
+        }
+
+        .glossary-term-def { color: #666; font-size: 0.83em; line-height: 1.5; }
+
+        .glossary-close {
+            position: absolute;
+            top: 14px;
+            right: 18px;
+            background: none;
+            border: none;
+            font-size: 1.3em;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        .glossary-close:hover { color: #333; }
+
+        body.dark-mode .history-section { background: #0f3460; border-color: #1e4a7a; }
+        body.dark-mode .history-item { background: #16213e; border-color: #1e4a7a; }
+        body.dark-mode .history-item-courant { color: #e0e0e0; }
+        body.dark-mode .history-item-situation { color: #888; }
+        body.dark-mode .glossary-modal { background: #16213e; color: #e0e0e0; }
+        body.dark-mode .glossary-term { border-color: #1e4a7a; }
+        body.dark-mode .glossary-term-name { color: #e0e0e0; }
+        body.dark-mode .glossary-term-def { color: #aaa; }
+
     </style>
 </head>
 <body>
@@ -971,6 +1157,11 @@
         </div>
 
         <div class="content">
+            <div id="historySection" class="history-section" style="display:none;">
+                <h3>🕐 Analyses récentes <button class="history-clear-btn" onclick="clearHistory()">Effacer</button></h3>
+                <div class="history-list" id="historyList"></div>
+            </div>
+
             <div id="step1" class="section">
                 <h2 class="section-title">Décrivez votre situation</h2>
                 <textarea id="situationDescription" placeholder="Décrivez une situation d'accompagnement vécue à La Pallanterie (atelier conditionnement-logistique). Par exemple : interactions avec un bénéficiaire CEA, méthode utilisée, objectifs visés, résultats observés..."></textarea>
@@ -1002,12 +1193,14 @@
                     <canvas id="radarCanvas" width="500" height="400"></canvas>
                 </div>
 
+                <div id="diversityBadgeContainer" style="text-align:center;"></div>
                 <div id="resultsContainer"></div>
 
                 <div class="share-section">
                     <button class="btn-reset" onclick="reset()">🔄 Nouvelle analyse</button>
                     <button class="btn-print" onclick="window.print()">🖨️ Imprimer / PDF</button>
                     <button class="btn-share" onclick="copyShareLink()">🔗 Partager</button>
+                    <button class="glossary-btn" onclick="openGlossary()">📚 Glossaire</button>
                 </div>
             </div>
         </div>
@@ -1472,6 +1665,7 @@
             `;
             container.appendChild(timeline.firstChild);
 
+            renderDiversityBadge(sorted);
             saveToLocalStorage(sorted);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -1629,6 +1823,91 @@
             alert('Lien de partage copié !');
         }
 
+        // ── Glossaire ──────────────────────────────────────────
+        const glossaryData = [
+            { term: "Pédagogie transmissive", def: "Modèle centré sur l'enseignant qui transmet son savoir. L'apprenant écoute, observe et reproduit." },
+            { term: "Béhaviorisme", def: "L'apprentissage se fait par conditionnement stimulus-réponse et renforcement. Théoriciens : Skinner, Pavlov, Watson." },
+            { term: "Cognitivisme / TCC", def: "Étude des processus mentaux (pensées, croyances) combinée à la modification des comportements. Beck, Ellis, Bandura." },
+            { term: "Socioconstructivisme", def: "Le savoir se construit en interaction sociale. Concept clé : zone proximale de développement (Vygotski)." },
+            { term: "Approche humaniste", def: "Centré sur la personne, ses besoins et son épanouissement. Carl Rogers (écoute active), Abraham Maslow (pyramide des besoins)." },
+            { term: "Approche systémique", def: "Analyse les interactions et le contexte global plutôt que les éléments isolés. École de Palo Alto." },
+            { term: "Pédagogie par compétences", def: "Organisation de l'apprentissage autour de compétences mesurables et transférables. Philippe Perrenoud." },
+            { term: "Renforcement positif", def: "Récompense d'un comportement souhaité pour augmenter sa fréquence d'apparition (Skinner)." },
+            { term: "Étayage (scaffolding)", def: "Soutien temporaire pour aider l'apprenant à accomplir une tâche au-delà de ses capacités actuelles seul." },
+            { term: "Zone proximale de développement", def: "Espace entre ce que l'apprenant sait faire seul et ce qu'il peut faire avec aide. Concept de Vygotski." },
+            { term: "Écoute active (Rogers)", def: "Technique d'accompagnement basée sur l'empathie, l'authenticité et la considération positive inconditionnelle." }
+        ];
+
+        function openGlossary() {
+            const el = document.getElementById('glossaryTerms');
+            el.innerHTML = glossaryData.map(g => `
+                <div class="glossary-term">
+                    <div class="glossary-term-name">${g.term}</div>
+                    <div class="glossary-term-def">${g.def}</div>
+                </div>
+            `).join('');
+            document.getElementById('glossaryOverlay').classList.add('open');
+        }
+
+        function closeGlossary() {
+            document.getElementById('glossaryOverlay').classList.remove('open');
+        }
+
+        // ── Historique ─────────────────────────────────────────
+        function saveToHistory(sorted) {
+            try {
+                const history = JSON.parse(localStorage.getItem('analysisHistory') || '[]');
+                history.unshift({
+                    date: new Date().toLocaleString('fr-FR'),
+                    situationText: situationText.slice(0, 120),
+                    dominant: sorted[0]?.data?.name || '',
+                    sorted: sorted.map(c => ({ key: c.key, score: c.score })),
+                    answers
+                });
+                localStorage.setItem('analysisHistory', JSON.stringify(history.slice(0, 5)));
+            } catch(e) {}
+        }
+
+        function loadHistory() {
+            try {
+                const history = JSON.parse(localStorage.getItem('analysisHistory') || '[]');
+                const section = document.getElementById('historySection');
+                if (!history.length) { section.style.display = 'none'; return; }
+                section.style.display = 'block';
+                document.getElementById('historyList').innerHTML = history.map((h, i) => `
+                    <div class="history-item">
+                        <div class="history-item-info">
+                            <div class="history-item-date">${h.date}</div>
+                            <div class="history-item-courant">🏆 ${h.dominant}</div>
+                            <div class="history-item-situation">${h.situationText}${h.situationText.length >= 120 ? '…' : ''}</div>
+                        </div>
+                        <button class="history-replay-btn" onclick="reloadAnalysis(${i})">↩ Revoir</button>
+                    </div>
+                `).join('');
+            } catch(e) {}
+        }
+
+        function reloadAnalysis(index) {
+            try {
+                const history = JSON.parse(localStorage.getItem('analysisHistory') || '[]');
+                const h = history[index];
+                if (!h) return;
+                situationText = h.situationText;
+                answers = h.answers || {};
+                document.getElementById('situationDescription').value = situationText;
+                const sorted = h.sorted.map(c => ({ key: c.key, score: c.score, data: courants[c.key] })).filter(c => c.data);
+                document.getElementById('step1').style.display = 'none';
+                document.getElementById('questions').style.display = 'none';
+                document.getElementById('results').style.display = 'block';
+                displayResults(sorted);
+            } catch(e) {}
+        }
+
+        function clearHistory() {
+            localStorage.removeItem('analysisHistory');
+            loadHistory();
+        }
+
         function saveToLocalStorage(sorted) {
             try {
                 const data = {
@@ -1639,6 +1918,23 @@
                 };
                 localStorage.setItem('lastAnalysis', JSON.stringify(data));
             } catch (e) {}
+            saveToHistory(sorted);
+        }
+
+        // ── Score de diversité ──────────────────────────────────
+        function renderDiversityBadge(sorted) {
+            const maxScore = sorted[0]?.score || 1;
+            const strong = sorted.filter(c => c.score / maxScore >= 0.6);
+            let label, cls, icon;
+            if (strong.length <= 1) {
+                label = 'Pratique centrée — 1 courant dominant'; cls = 'mono'; icon = '🎯';
+            } else if (strong.length === 2) {
+                label = 'Pratique mixte — 2 courants complémentaires'; cls = 'mixed'; icon = '⚖️';
+            } else {
+                label = `Pratique diversifiée — ${strong.length} courants mobilisés`; cls = 'diverse'; icon = '🌈';
+            }
+            const container = document.getElementById('diversityBadgeContainer');
+            if (container) container.innerHTML = `<div class="diversity-badge ${cls}">${icon} ${label}</div>`;
         }
 
         function reset() {
@@ -1647,12 +1943,15 @@
             answers = {};
             document.getElementById('progressInner').style.width = '0%';
             document.getElementById('progressLabel').textContent = '0 / 6 questions répondues';
-            localStorage.removeItem('lastAnalysis');
             document.getElementById('step1').style.display = 'block';
             document.getElementById('questions').style.display = 'none';
             document.getElementById('results').style.display = 'none';
+            loadHistory();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
+        // Load history on start
+        loadHistory();
 
         // Load from URL on init
         const params = new URLSearchParams(window.location.search);
@@ -1674,6 +1973,15 @@
         }
     </script>
 </div>
+    <!-- Glossary Modal -->
+    <div class="glossary-overlay" id="glossaryOverlay" onclick="if(event.target===this)closeGlossary()">
+        <div class="glossary-modal">
+            <button class="glossary-close" onclick="closeGlossary()">✕</button>
+            <h3>📚 Glossaire pédagogique</h3>
+            <div id="glossaryTerms"></div>
+        </div>
+    </div>
+
 <div class="footer-legal">
   <strong>© 2025–2026 MARET Davie — Tous droits réservés.</strong> Toute reproduction ou utilisation de ce logiciel sans accord préalable écrit est interdite.
 </div>
