@@ -1817,10 +1817,31 @@
         }
 
         function copyShareLink() {
-            const encoded = btoa(JSON.stringify({ situation: situationText, answers }));
+            const encoded = btoa(unescape(encodeURIComponent(JSON.stringify({ situation: situationText, answers }))));
             const link = `${window.location.origin}${window.location.pathname}?analysis=${encoded}`;
-            navigator.clipboard.writeText(link);
-            alert('Lien de partage copié !');
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(link).then(() => {
+                    alert('Lien de partage copié !');
+                }).catch(() => fallbackCopy(link));
+            } else {
+                fallbackCopy(link);
+            }
+        }
+
+        function fallbackCopy(text) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0';
+            document.body.appendChild(ta);
+            ta.focus();
+            ta.select();
+            try {
+                document.execCommand('copy');
+                alert('Lien de partage copié !');
+            } catch(e) {
+                prompt('Copiez ce lien manuellement (Ctrl+C) :', text);
+            }
+            document.body.removeChild(ta);
         }
 
         // ── Glossaire ──────────────────────────────────────────
