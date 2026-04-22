@@ -183,6 +183,52 @@
             border-color: #667eea;
         }
 
+        .option-button[data-tooltip] {
+            position: relative;
+        }
+
+        .option-button[data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: 50%;
+            bottom: calc(100% + 8px);
+            transform: translateX(-50%);
+            background: #2c2c3e;
+            color: #f0f0f0;
+            font-size: 0.78em;
+            font-weight: 400;
+            line-height: 1.5;
+            padding: 9px 14px;
+            border-radius: 10px;
+            white-space: normal;
+            width: 280px;
+            text-align: left;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.25);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.18s ease;
+            z-index: 100;
+        }
+
+        .option-button[data-tooltip]::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: calc(100% + 2px);
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: #2c2c3e;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.18s ease;
+            z-index: 100;
+        }
+
+        .option-button[data-tooltip]:hover::after,
+        .option-button[data-tooltip]:hover::before {
+            opacity: 1;
+        }
+
         .option-button.selected {
             background: #667eea;
             color: white;
@@ -1407,68 +1453,68 @@
                 id: "posture",
                 question: "Quelle posture avez-vous adoptée principalement ?",
                 options: [
-                    { text: "Expert qui transmet son savoir", courants: ["transmissif"], weight: 3 },
-                    { text: "Facilitateur qui accompagne sans diriger", courants: ["humaniste"], weight: 3 },
-                    { text: "Observateur et analyste des interactions", courants: ["systemique"], weight: 3 },
-                    { text: "Guide qui structure l'apprentissage", courants: ["behaviorisme", "competences"], weight: 2 },
-                    { text: "Médiateur entre pairs", courants: ["socioconstructivisme"], weight: 3 }
+                    { text: "Expert qui transmet son savoir", courants: ["transmissif"], weight: 3, tooltip: "Ex. : Vous montrez comment étiqueter un carton étape par étape, puis demandez au bénéficiaire de reproduire le geste." },
+                    { text: "Facilitateur qui accompagne sans diriger", courants: ["humaniste"], weight: 3, tooltip: "Ex. : Vous posez des questions ouvertes et laissez le bénéficiaire trouver ses propres solutions sans imposer de méthode." },
+                    { text: "Observateur et analyste des interactions", courants: ["systemique"], weight: 3, tooltip: "Ex. : Vous observez comment le bénéficiaire interagit avec ses collègues avant d'intervenir sur la dynamique." },
+                    { text: "Guide qui structure l'apprentissage", courants: ["behaviorisme", "competences"], weight: 2, tooltip: "Ex. : Vous découpez la tâche en micro-étapes avec des objectifs clairs et vérifiables pour chacune." },
+                    { text: "Médiateur entre pairs", courants: ["socioconstructivisme"], weight: 3, tooltip: "Ex. : Vous organisez un binôme expérimenté/novice et facilitez leurs échanges sans intervenir directement." }
                 ]
             },
             {
                 id: "objectif",
                 question: "Quel était l'objectif principal ?",
                 options: [
-                    { text: "Transmettre un savoir-faire technique", courants: ["transmissif"], weight: 3 },
-                    { text: "Développer autonomie et confiance", courants: ["humaniste"], weight: 3 },
-                    { text: "Modifier un comportement observable", courants: ["behaviorisme"], weight: 3 },
-                    { text: "Améliorer les interactions", courants: ["systemique"], weight: 3 },
-                    { text: "Construire par l'échange entre pairs", courants: ["socioconstructivisme"], weight: 3 },
-                    { text: "Développer une compétence", courants: ["competences"], weight: 3 }
+                    { text: "Transmettre un savoir-faire technique", courants: ["transmissif"], weight: 3, tooltip: "Ex. : Enseigner la procédure d'emballage conforme aux normes de l'atelier conditionnement." },
+                    { text: "Développer autonomie et confiance", courants: ["humaniste"], weight: 3, tooltip: "Ex. : Aider le bénéficiaire à croire en ses capacités et à travailler sans supervision constante." },
+                    { text: "Modifier un comportement observable", courants: ["behaviorisme"], weight: 3, tooltip: "Ex. : Réduire les erreurs de tri en renforçant systématiquement les bons gestes." },
+                    { text: "Améliorer les interactions", courants: ["systemique"], weight: 3, tooltip: "Ex. : Résoudre une tension entre deux bénéficiaires qui perturbait le fonctionnement du groupe." },
+                    { text: "Construire par l'échange entre pairs", courants: ["socioconstructivisme"], weight: 3, tooltip: "Ex. : Faire verbaliser les expériences de chacun pour enrichir la compréhension collective." },
+                    { text: "Développer une compétence", courants: ["competences"], weight: 3, tooltip: "Ex. : Valider la compétence 'conditionnement autonome' en situation réelle de production." }
                 ]
             },
             {
                 id: "methode",
                 question: "Quelle méthode avez-vous principalement utilisée ?",
                 options: [
-                    { text: "Démonstration puis imitation", courants: ["transmissif", "behaviorisme"], weight: 2 },
-                    { text: "Écoute active, questionnement", courants: ["humaniste"], weight: 3 },
-                    { text: "Exercices répétés avec renforcement", courants: ["behaviorisme"], weight: 3 },
-                    { text: "Travail en groupe et échanges", courants: ["socioconstructivisme"], weight: 3 },
-                    { text: "Analyse des interactions", courants: ["systemique"], weight: 3 },
-                    { text: "Mise en situation réelle", courants: ["competences"], weight: 3 }
+                    { text: "Démonstration puis imitation", courants: ["transmissif", "behaviorisme"], weight: 2, tooltip: "Ex. : Vous faites le geste en entier, puis le bénéficiaire reproduit sous votre regard attentif." },
+                    { text: "Écoute active, questionnement", courants: ["humaniste"], weight: 3, tooltip: "Ex. : 'Comment tu te sens face à cette tâche ?' — vous laissez parler avant d'intervenir." },
+                    { text: "Exercices répétés avec renforcement", courants: ["behaviorisme"], weight: 3, tooltip: "Ex. : 10 répétitions du geste, avec félicitations immédiates à chaque réussite." },
+                    { text: "Travail en groupe et échanges", courants: ["socioconstructivisme"], weight: 3, tooltip: "Ex. : Discussion en équipe sur les difficultés rencontrées, puis élaboration de solutions collectives." },
+                    { text: "Analyse des interactions", courants: ["systemique"], weight: 3, tooltip: "Ex. : 'Je remarque que quand X fait ça, Y réagit toujours de cette façon — qu'est-ce qui se passe selon vous ?'" },
+                    { text: "Mise en situation réelle", courants: ["competences"], weight: 3, tooltip: "Ex. : Le bénéficiaire gère seul une commande de A à Z dans les conditions réelles du poste." }
                 ]
             },
             {
                 id: "relation",
                 question: "Comment caractériseriez-vous la relation ?",
                 options: [
-                    { text: "Verticale expert-apprenant", courants: ["transmissif"], weight: 2 },
-                    { text: "Horizontale de confiance", courants: ["humaniste"], weight: 3 },
-                    { text: "Focus sur les interactions globales", courants: ["systemique"], weight: 3 },
-                    { text: "Collaboration entre pairs", courants: ["socioconstructivisme"], weight: 3 },
-                    { text: "Guidance avec feedbacks", courants: ["behaviorisme", "competences"], weight: 2 }
+                    { text: "Verticale expert-apprenant", courants: ["transmissif"], weight: 2, tooltip: "Ex. : Vous détenez les réponses et le bénéficiaire apprend de vous, la direction vient de vous." },
+                    { text: "Horizontale de confiance", courants: ["humaniste"], weight: 3, tooltip: "Ex. : Vous vous mettez au même niveau, exprimez de l'empathie et valorisez chaque tentative sans juger." },
+                    { text: "Focus sur les interactions globales", courants: ["systemique"], weight: 3, tooltip: "Ex. : Vous tenez compte des tensions dans le groupe et de l'ambiance générale avant d'intervenir." },
+                    { text: "Collaboration entre pairs", courants: ["socioconstructivisme"], weight: 3, tooltip: "Ex. : Les bénéficiaires s'entraident activement, vous intervenez seulement pour réguler." },
+                    { text: "Guidance avec feedbacks", courants: ["behaviorisme", "competences"], weight: 2, tooltip: "Ex. : Vous donnez des retours précis et réguliers : 'Bien pour les étapes 1-3, concentre-toi sur la 4e.'" }
                 ]
             },
             {
                 id: "erreur",
                 question: "Comment avez-vous abordé les erreurs ?",
                 options: [
-                    { text: "Correction immédiate", courants: ["transmissif", "behaviorisme"], weight: 2 },
-                    { text: "Source d'apprentissage", courants: ["humaniste", "socioconstructivisme"], weight: 2 },
-                    { text: "Analyse des patterns", courants: ["systemique"], weight: 3 },
-                    { text: "Ajustement pour compétence", courants: ["competences"], weight: 2 },
-                    { text: "Restructuration cognitive", courants: ["cognitivisme_tcc"], weight: 3 }
+                    { text: "Correction immédiate", courants: ["transmissif", "behaviorisme"], weight: 2, tooltip: "Ex. : 'Non, ce n'est pas comme ça — regarde, je te remontres la bonne façon de faire.'" },
+                    { text: "Source d'apprentissage", courants: ["humaniste", "socioconstructivisme"], weight: 2, tooltip: "Ex. : 'Qu'est-ce que cette erreur t'a appris ? Comment tu ferais différemment la prochaine fois ?'" },
+                    { text: "Analyse des patterns", courants: ["systemique"], weight: 3, tooltip: "Ex. : 'Je remarque que cette erreur revient toujours dans les mêmes conditions — qu'est-ce qui se passe à ce moment-là ?'" },
+                    { text: "Ajustement pour compétence", courants: ["competences"], weight: 2, tooltip: "Ex. : L'erreur pointe une sous-compétence à retravailler avant de valider l'étape suivante." },
+                    { text: "Restructuration cognitive", courants: ["cognitivisme_tcc"], weight: 3, tooltip: "Ex. : 'Tu pensais que tu n'y arriverais pas — que t'apprend cette réussite sur cette croyance ?'" }
                 ]
             },
             {
                 id: "communication",
                 question: "Quel aspect de la communication était important ?",
                 options: [
-                    { text: "Clarté des consignes", courants: ["transmissif"], weight: 2 },
-                    { text: "Écoute empathique", courants: ["humaniste"], weight: 3 },
-                    { text: "Patterns relationnels", courants: ["systemique"], weight: 3 },
-                    { text: "Échanges entre pairs", courants: ["socioconstructivisme"], weight: 3 },
-                    { text: "Feedbacks précis", courants: ["behaviorisme"], weight: 2 }
+                    { text: "Clarté des consignes", courants: ["transmissif"], weight: 2, tooltip: "Ex. : Instructions précises, une seule chose à la fois, vérification de la compréhension avant de passer à la suite." },
+                    { text: "Écoute empathique", courants: ["humaniste"], weight: 3, tooltip: "Ex. : Reformuler ce que le bénéficiaire exprime : 'J'entends que tu te sens dépassé par cette étape.'" },
+                    { text: "Patterns relationnels", courants: ["systemique"], weight: 3, tooltip: "Ex. : Repérer les messages contradictoires ou les tensions non-dites qui bloquent la communication." },
+                    { text: "Échanges entre pairs", courants: ["socioconstructivisme"], weight: 3, tooltip: "Ex. : Encourager les bénéficiaires à se donner des retours entre eux plutôt que tout passer par vous." },
+                    { text: "Feedbacks précis", courants: ["behaviorisme"], weight: 2, tooltip: "Ex. : 'Tu as bien géré les 3 premières étapes — maintenant concentre-toi uniquement sur la 4e.'" }
                 ]
             }
         ];
@@ -1518,6 +1564,7 @@
                     const btn = document.createElement('button');
                     btn.className = 'option-button';
                     btn.textContent = opt.text;
+                    if (opt.tooltip) btn.setAttribute('data-tooltip', opt.tooltip);
                     btn.onclick = () => selectOption(q.id, j, btn);
                     opts.appendChild(btn);
                 });
