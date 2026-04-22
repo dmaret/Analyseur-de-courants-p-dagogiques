@@ -2065,7 +2065,7 @@
                 const history = JSON.parse(localStorage.getItem('analysisHistory') || '[]');
                 history.unshift({
                     date: new Date().toLocaleString('fr-FR'),
-                    situationText: situationText.slice(0, 120),
+                    situationText: situationText,
                     dominant: sorted[0]?.data?.name || '',
                     sorted: sorted.map(c => ({ key: c.key, score: c.score })),
                     answers
@@ -2219,30 +2219,51 @@
         function downloadAnalysis() {
             if (!_currentSorted.length) return;
             const maxScore = _currentSorted[0].score;
+            const strip = s => s.replace(/<[^>]+>/g, '');
+            const sep  = '═══════════════════════════════════════════════════════';
+            const sep2 = '───────────────────────────────────────────────────────';
+            const synthParagraphs = generateSynthesisText(_currentSorted).map(p => strip(p));
+
             const lines = [
-                '═══════════════════════════════════════════════════════',
-                '  ANALYSE DE COURANTS PÉDAGOGIQUES — MSP ARPIH',
+                sep,
+                '  ANALYSE DE COURANTS PÉDAGOGIQUES',
+                '  MSP ARPIH — La Pallanterie',
                 `  Date : ${new Date().toLocaleString('fr-FR')}`,
-                '═══════════════════════════════════════════════════════',
+                sep,
                 '',
-                '▌ SITUATION ANALYSÉE',
-                situationText,
+                '┌─ SITUATION D\'ORIGINE ──────────────────────────────',
+                '│',
+                ...situationText.split('\n').map(l => `│  ${l}`),
+                '│',
+                sep2,
                 '',
-                '▌ PROFIL PÉDAGOGIQUE',
-                ..._currentSorted.map(c => `  • ${c.data.name} : ${Math.round(c.score / maxScore * 100)} %`),
+                '┌─ PROFIL PÉDAGOGIQUE ───────────────────────────────',
+                '│',
+                ..._currentSorted.map(c => {
+                    const pct = Math.round(c.score / maxScore * 100);
+                    const bar = '█'.repeat(Math.round(pct / 10)) + '░'.repeat(10 - Math.round(pct / 10));
+                    return `│  ${bar}  ${pct}%  ${c.data.name}`;
+                }),
+                '│',
+                sep2,
                 '',
-                '▌ SYNTHÈSE',
-                ...generateSynthesisText(_currentSorted).map(p => p.replace(/<[^>]+>/g, '')),
+                '┌─ SYNTHÈSE ─────────────────────────────────────────',
+                '│',
+                ...synthParagraphs.map(p => `│  ${p}`),
+                '│',
+                sep2,
                 '',
-                '▌ RECOMMANDATIONS',
-                ..._currentSorted.slice(0, 2).flatMap(c => [
-                    `  ${c.data.name} :`,
-                    ...c.data.recommendations.map(r => `    - ${r}`)
+                '┌─ RECOMMANDATIONS PRATIQUES ────────────────────────',
+                '│',
+                ..._currentSorted.slice(0, 3).flatMap(c => [
+                    `│  ▸ ${c.data.name}`,
+                    ...c.data.recommendations.map(r => `│    - ${r}`),
+                    '│'
                 ]),
+                sep2,
                 '',
-                '───────────────────────────────────────────────────────',
                 '  © 2025–2026 MARET Davie — dmaret™',
-                '═══════════════════════════════════════════════════════'
+                sep
             ];
             const blob = new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' });
             const url = URL.createObjectURL(blob);
