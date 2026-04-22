@@ -896,6 +896,117 @@
         }
 
 
+        .btn-save {
+            background: #10b981;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .btn-save:hover { background: #059669; }
+
+        .btn-download {
+            background: #f59e0b;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .btn-download:hover { background: #d97706; }
+
+        /* Saved analyses panel */
+        .saved-section {
+            margin-bottom: 20px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 14px;
+            padding: 16px 20px;
+        }
+
+        .saved-section h3 {
+            font-family: 'DM Serif Display', serif;
+            color: #059669;
+            font-size: 1.05em;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .saved-item {
+            display: flex;
+            align-items: center;
+            background: white;
+            border: 1px solid #d1fae5;
+            border-radius: 10px;
+            padding: 10px 14px;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .saved-item:last-child { margin-bottom: 0; }
+
+        .saved-item-name {
+            font-weight: 700;
+            color: #065f46;
+            font-size: 0.9em;
+        }
+
+        .saved-item-meta {
+            font-size: 0.74em;
+            color: #6b7280;
+        }
+
+        .saved-item-actions {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .saved-replay-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 5px 12px;
+            font-size: 0.78em;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .saved-replay-btn:hover { background: #059669; }
+
+        .saved-delete-btn {
+            background: none;
+            border: 1px solid #fca5a5;
+            color: #ef4444;
+            border-radius: 8px;
+            padding: 5px 10px;
+            font-size: 0.78em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .saved-delete-btn:hover { background: #fee2e2; }
+
+        body.dark-mode .saved-section { background: #0a2e1e; border-color: #065f46; }
+        body.dark-mode .saved-item { background: #0f3020; border-color: #065f46; }
+        body.dark-mode .saved-item-name { color: #6ee7b7; }
+
         @media print {
             body { background: white !important; padding: 0 !important; }
             .container { box-shadow: none !important; border-radius: 0 !important; max-width: 100% !important; }
@@ -1203,6 +1314,11 @@
         </div>
 
         <div class="content">
+            <div id="savedSection" class="saved-section" style="display:none;">
+                <h3>💾 Analyses sauvegardées <span id="savedCount" style="font-size:0.72em;font-weight:400;color:#6b7280;"></span></h3>
+                <div id="savedList"></div>
+            </div>
+
             <div id="historySection" class="history-section" style="display:none;">
                 <h3>🕐 Analyses récentes <button class="history-clear-btn" onclick="clearHistory()">Effacer</button></h3>
                 <div class="history-list" id="historyList"></div>
@@ -1244,6 +1360,8 @@
 
                 <div class="share-section">
                     <button class="btn-reset" onclick="reset()">🔄 Nouvelle analyse</button>
+                    <button class="btn-save" onclick="saveAnalysis()">💾 Sauvegarder</button>
+                    <button class="btn-download" onclick="downloadAnalysis()">⬇️ Télécharger</button>
                     <button class="btn-print" onclick="window.print()">🖨️ Imprimer / PDF</button>
                     <button class="btn-share" onclick="copyShareLink()">🔗 Partager</button>
                     <button class="glossary-btn" onclick="openGlossary()">📚 Glossaire</button>
@@ -1712,6 +1830,7 @@
             `;
             container.appendChild(timeline.firstChild);
 
+            _currentSorted = sorted;
             renderDiversityBadge(sorted);
             saveToLocalStorage(sorted);
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2024,21 +2143,134 @@
             if (container) container.innerHTML = `<div class="diversity-badge ${cls}">${icon} ${label}</div>`;
         }
 
+        // ── Sauvegarde nommée ──────────────────────────────────
+        let _currentSorted = [];
+
+        function saveAnalysis() {
+            if (!_currentSorted.length) return;
+            const name = prompt('Nom pour cette sauvegarde :', `Analyse du ${new Date().toLocaleDateString('fr-FR')}`);
+            if (!name) return;
+            try {
+                const saved = JSON.parse(localStorage.getItem('savedAnalyses') || '[]');
+                saved.unshift({
+                    id: Date.now(),
+                    name: name.trim(),
+                    date: new Date().toLocaleString('fr-FR'),
+                    situationText,
+                    dominant: _currentSorted[0]?.data?.name || '',
+                    sorted: _currentSorted.map(c => ({ key: c.key, score: c.score })),
+                    answers
+                });
+                localStorage.setItem('savedAnalyses', JSON.stringify(saved));
+                loadSaved();
+                alert(`✅ Analyse "${name.trim()}" sauvegardée !`);
+            } catch(e) {}
+        }
+
+        function loadSaved() {
+            try {
+                const saved = JSON.parse(localStorage.getItem('savedAnalyses') || '[]');
+                const section = document.getElementById('savedSection');
+                const count = document.getElementById('savedCount');
+                if (!saved.length) { section.style.display = 'none'; return; }
+                section.style.display = 'block';
+                count.textContent = `(${saved.length} analyse${saved.length > 1 ? 's' : ''})`;
+                document.getElementById('savedList').innerHTML = saved.map((s) => `
+                    <div class="saved-item">
+                        <div style="flex:1;min-width:0;">
+                            <div class="saved-item-name">${s.name}</div>
+                            <div class="saved-item-meta">${s.date} · 🏆 ${s.dominant}</div>
+                        </div>
+                        <div class="saved-item-actions">
+                            <button class="saved-replay-btn" onclick="reloadSaved(${s.id})">↩ Revoir</button>
+                            <button class="saved-delete-btn" onclick="deleteSaved(${s.id})">✕</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch(e) {}
+        }
+
+        function reloadSaved(id) {
+            try {
+                const saved = JSON.parse(localStorage.getItem('savedAnalyses') || '[]');
+                const s = saved.find(x => x.id === id);
+                if (!s) return;
+                situationText = s.situationText;
+                answers = s.answers || {};
+                document.getElementById('situationDescription').value = situationText;
+                const sorted = s.sorted.map(c => ({ key: c.key, score: c.score, data: courants[c.key] })).filter(c => c.data);
+                document.getElementById('step1').style.display = 'none';
+                document.getElementById('questions').style.display = 'none';
+                document.getElementById('results').style.display = 'block';
+                displayResults(sorted);
+            } catch(e) {}
+        }
+
+        function deleteSaved(id) {
+            if (!confirm('Supprimer cette sauvegarde ?')) return;
+            try {
+                const saved = JSON.parse(localStorage.getItem('savedAnalyses') || '[]').filter(x => x.id !== id);
+                localStorage.setItem('savedAnalyses', JSON.stringify(saved));
+                loadSaved();
+            } catch(e) {}
+        }
+
+        // ── Téléchargement fichier texte ────────────────────────
+        function downloadAnalysis() {
+            if (!_currentSorted.length) return;
+            const maxScore = _currentSorted[0].score;
+            const lines = [
+                '═══════════════════════════════════════════════════════',
+                '  ANALYSE DE COURANTS PÉDAGOGIQUES — MSP ARPIH',
+                `  Date : ${new Date().toLocaleString('fr-FR')}`,
+                '═══════════════════════════════════════════════════════',
+                '',
+                '▌ SITUATION ANALYSÉE',
+                situationText,
+                '',
+                '▌ PROFIL PÉDAGOGIQUE',
+                ..._currentSorted.map(c => `  • ${c.data.name} : ${Math.round(c.score / maxScore * 100)} %`),
+                '',
+                '▌ SYNTHÈSE',
+                ...generateSynthesisText(_currentSorted).map(p => p.replace(/<[^>]+>/g, '')),
+                '',
+                '▌ RECOMMANDATIONS',
+                ..._currentSorted.slice(0, 2).flatMap(c => [
+                    `  ${c.data.name} :`,
+                    ...c.data.recommendations.map(r => `    - ${r}`)
+                ]),
+                '',
+                '───────────────────────────────────────────────────────',
+                '  © 2025–2026 MARET Davie — dmaret™',
+                '═══════════════════════════════════════════════════════'
+            ];
+            const blob = new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `analyse-pedagogique-${new Date().toISOString().slice(0,10)}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
         function reset() {
             document.getElementById('situationDescription').value = '';
             situationText = "";
             answers = {};
+            _currentSorted = [];
             document.getElementById('progressInner').style.width = '0%';
             document.getElementById('progressLabel').textContent = '0 / 6 questions répondues';
             document.getElementById('step1').style.display = 'block';
             document.getElementById('questions').style.display = 'none';
             document.getElementById('results').style.display = 'none';
             loadHistory();
+            loadSaved();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         // Load history on start
         loadHistory();
+        loadSaved();
 
         // Load from URL on init
         const params = new URLSearchParams(window.location.search);
