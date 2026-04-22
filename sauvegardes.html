@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes analyses sauvegardées — MSP ARPIH</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2c2c2c;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 32px 40px;
+        }
+
+        .header h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.9em;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .header p {
+            opacity: 0.85;
+            font-size: 0.95em;
+            font-weight: 300;
+        }
+
+        .content { padding: 36px 40px 60px; }
+
+        /* Toolbar */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .toolbar-left { display: flex; align-items: center; gap: 12px; }
+
+        .count-badge {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #059669;
+            border-radius: 20px;
+            padding: 4px 14px;
+            font-size: 0.82em;
+            font-weight: 600;
+        }
+
+        .search-input {
+            padding: 8px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9em;
+            outline: none;
+            transition: border-color 0.2s;
+            width: 220px;
+        }
+
+        .search-input:focus { border-color: #667eea; }
+
+        .btn-clear-all {
+            background: none;
+            border: 1px solid #fca5a5;
+            color: #ef4444;
+            border-radius: 8px;
+            padding: 7px 14px;
+            font-size: 0.82em;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .btn-clear-all:hover { background: #fee2e2; }
+
+        /* Cards */
+        .saved-card {
+            border: 2px solid #e8ebff;
+            border-radius: 14px;
+            margin-bottom: 16px;
+            overflow: hidden;
+            transition: box-shadow 0.2s, border-color 0.2s;
+        }
+
+        .saved-card:hover { box-shadow: 0 4px 20px rgba(102,126,234,0.12); border-color: #c4caff; }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            cursor: pointer;
+            gap: 14px;
+            background: #fafbff;
+            border-bottom: 2px solid transparent;
+            transition: background 0.2s;
+        }
+
+        .card-header:hover { background: #f0f4ff; }
+
+        .card-header.open { border-bottom-color: #e8ebff; background: #f0f4ff; }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1em;
+            flex-shrink: 0;
+        }
+
+        .card-info { flex: 1; min-width: 0; }
+
+        .card-name {
+            font-weight: 700;
+            color: #2c2c2c;
+            font-size: 1em;
+            margin-bottom: 2px;
+        }
+
+        .card-meta {
+            font-size: 0.76em;
+            color: #888;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .card-dominant {
+            background: #f0fdf4;
+            color: #059669;
+            border-radius: 10px;
+            padding: 2px 10px;
+            font-weight: 600;
+            font-size: 0.8em;
+        }
+
+        .card-chevron {
+            color: #aaa;
+            font-size: 1em;
+            transition: transform 0.25s;
+            flex-shrink: 0;
+        }
+
+        .card-chevron.open { transform: rotate(180deg); }
+
+        /* Card body */
+        .card-body {
+            display: none;
+            padding: 20px 24px;
+            background: white;
+        }
+
+        .card-body.open { display: block; }
+
+        .card-section-title {
+            font-family: 'DM Serif Display', serif;
+            color: #667eea;
+            font-size: 0.95em;
+            margin: 16px 0 8px;
+        }
+
+        .card-section-title:first-child { margin-top: 0; }
+
+        .situation-text {
+            background: #f8f9ff;
+            border-left: 3px solid #667eea;
+            padding: 12px 16px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.88em;
+            color: #444;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        /* Profile bars */
+        .profile-bars { display: flex; flex-direction: column; gap: 8px; }
+
+        .profile-bar-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85em;
+        }
+
+        .profile-bar-label { width: 180px; font-weight: 500; color: #333; flex-shrink: 0; }
+
+        .profile-bar-track {
+            flex: 1;
+            background: #e8ebff;
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+        }
+
+        .profile-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 10px;
+        }
+
+        .profile-bar-pct {
+            width: 36px;
+            text-align: right;
+            color: #667eea;
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+
+        /* Synthesis */
+        .synthesis-text {
+            font-size: 0.88em;
+            color: #444;
+            line-height: 1.7;
+        }
+
+        .synthesis-text p { margin-bottom: 10px; }
+        .synthesis-text p:last-child { margin-bottom: 0; }
+
+        /* Actions */
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 1px solid #f0f0f0;
+            flex-wrap: wrap;
+        }
+
+        .btn-reload {
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 9px 20px;
+            font-size: 0.88em;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-reload:hover { background: #5a6fd6; }
+
+        .btn-dl {
+            background: #f59e0b;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 9px 20px;
+            font-size: 0.88em;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-dl:hover { background: #d97706; }
+
+        .btn-del {
+            background: none;
+            border: 1px solid #fca5a5;
+            color: #ef4444;
+            border-radius: 10px;
+            padding: 9px 16px;
+            font-size: 0.88em;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            margin-left: auto;
+            transition: all 0.2s;
+        }
+
+        .btn-del:hover { background: #fee2e2; }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #aaa;
+        }
+
+        .empty-state .icon { font-size: 3em; margin-bottom: 14px; }
+        .empty-state p { font-size: 0.95em; margin-bottom: 20px; }
+
+        .btn-back-main {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            padding: 10px 24px;
+            font-size: 0.9em;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+
+        .btn-back-main:hover { opacity: 0.9; }
+
+        /* Fixed buttons */
+        .btn-portal {
+            position: fixed;
+            bottom: 18px;
+            left: 18px;
+            background: #2c2c2c;
+            color: #fff;
+            border: none;
+            border-radius: 22px;
+            padding: 9px 18px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.82em;
+            font-weight: 500;
+            cursor: pointer;
+            z-index: 50;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+            transition: background 0.2s;
+        }
+
+        .btn-portal:hover { background: #444; }
+
+        /* Footer */
+        .footer-legal {
+            padding: 10px 40px 68px;
+            background: transparent;
+            border: none;
+            font-size: 0.65em;
+            color: rgba(255,255,255,0.4);
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .content { padding: 20px; }
+            .search-input { width: 100%; }
+            .toolbar { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💾 Mes analyses sauvegardées</h1>
+            <p>Retrouvez, consultez et téléchargez toutes vos analyses</p>
+        </div>
+
+        <div class="content">
+            <div class="toolbar">
+                <div class="toolbar-left">
+                    <span class="count-badge" id="countBadge">0 analyse</span>
+                    <input type="text" class="search-input" id="searchInput" placeholder="🔍 Rechercher..." oninput="filterSaved()">
+                </div>
+                <button class="btn-clear-all" onclick="clearAll()">🗑 Tout effacer</button>
+            </div>
+
+            <div id="savedList"></div>
+
+            <div id="emptyState" class="empty-state" style="display:none;">
+                <div class="icon">📂</div>
+                <p>Aucune analyse sauvegardée pour le moment.</p>
+                <a href="index.html" class="btn-back-main">← Faire une analyse</a>
+            </div>
+        </div>
+    </div>
+
+    <a href="index.html" class="btn-portal">← Retour à l'analyseur</a>
+
+    <div class="footer-legal">
+        <strong>© 2025–2026 MARET Davie — Tous droits réservés.</strong>
+    </div>
+
+    <script>
+        const courants = {
+            transmissif:        { name: "Pédagogie Transmissive" },
+            behaviorisme:       { name: "Béhaviorisme" },
+            cognitivisme_tcc:   { name: "Cognitivo-Comportemental" },
+            humaniste:          { name: "Approche Humaniste" },
+            systemique:         { name: "Approche Systémique" },
+            socioconstructivisme: { name: "Socioconstructivisme" },
+            competences:        { name: "Pédagogie par Compétences" }
+        };
+
+        const recommendations = {
+            transmissif:        ["Structurez vos démonstrations en étapes courtes", "Alternez explications et mises en pratique rapides", "Utilisez des outils visuels pour faciliter la compréhension", "Proposez des tâches proches des situations réelles"],
+            behaviorisme:       ["Identifiez clairement les comportements cibles", "Décomposez en micro-étapes de difficulté progressive", "Renforcez positivement immédiatement après chaque progrès", "Créez des boucles d'apprentissage courtes et répétitives"],
+            cognitivisme_tcc:   ["Explorez les pensées automatiques derrière les difficultés", "Questionnez les croyances limitantes avec bienveillance", "Proposez des expériences comportementales pour tester les croyances", "Développez des stratégies de gestion émotionnelle"],
+            humaniste:          ["Créez un espace de parole sécurisé et bienveillant", "Valorisez les ressources et compétences existantes", "Accompagnez sans imposer, en suivant le rythme du bénéficiaire", "Favorisez l'autodétermination et les choix personnels"],
+            systemique:         ["Observez qui communique avec qui et comment", "Identifiez les boucles relationnelles répétitives", "Cherchez à décoder les patterns cachés", "Proposez des interventions qui changent la dynamique"],
+            socioconstructivisme: ["Favorisez les échanges et débats entre pairs", "Créez des situations de conflit cognitif productif", "Valorisez les différentes perspectives", "Organisez des travaux collaboratifs avec des rôles définis"],
+            competences:        ["Définissez des compétences claires et observables", "Évaluez en situation réelle plutôt qu'en exercice", "Donnez des feedbacks centrés sur la compétence visée", "Permettez plusieurs tentatives pour valider une compétence"]
+        };
+
+        let allSaved = [];
+
+        function loadSaved() {
+            allSaved = JSON.parse(localStorage.getItem('savedAnalyses') || '[]');
+            renderSaved(allSaved);
+        }
+
+        function renderSaved(list) {
+            const container = document.getElementById('savedList');
+            const empty = document.getElementById('emptyState');
+            const badge = document.getElementById('countBadge');
+
+            badge.textContent = `${list.length} analyse${list.length > 1 ? 's' : ''}`;
+
+            if (!list.length) {
+                container.innerHTML = '';
+                empty.style.display = 'block';
+                return;
+            }
+            empty.style.display = 'none';
+
+            container.innerHTML = list.map(s => {
+                const maxScore = Math.max(...s.sorted.map(c => c.score), 1);
+                const strong = s.sorted.filter(c => c.score / maxScore >= 0.6);
+                const level = strong.length <= 1 ? '🎯 Pratique centrée' : strong.length === 2 ? '⚖️ Pratique mixte' : `🌈 Pratique diversifiée (${strong.length})`;
+                return `
+                <div class="saved-card" id="card-${s.id}">
+                    <div class="card-header" onclick="toggleCard(${s.id})">
+                        <div class="card-icon">💾</div>
+                        <div class="card-info">
+                            <div class="card-name">${s.name}</div>
+                            <div class="card-meta">
+                                <span>${s.date}</span>
+                                <span class="card-dominant">🏆 ${s.dominant}</span>
+                                <span style="color:#888;">${level}</span>
+                            </div>
+                        </div>
+                        <span class="card-chevron" id="chevron-${s.id}">▼</span>
+                    </div>
+                    <div class="card-body" id="body-${s.id}">
+                        <div class="card-section-title">📝 Situation d'origine</div>
+                        <div class="situation-text">${escHtml(s.situationText)}</div>
+
+                        <div class="card-section-title">📊 Profil pédagogique</div>
+                        <div class="profile-bars">
+                            ${s.sorted.map(c => {
+                                const pct = Math.round(c.score / maxScore * 100);
+                                const name = courants[c.key]?.name || c.key;
+                                return `<div class="profile-bar-row">
+                                    <div class="profile-bar-label">${name}</div>
+                                    <div class="profile-bar-track"><div class="profile-bar-fill" style="width:${pct}%"></div></div>
+                                    <div class="profile-bar-pct">${pct}%</div>
+                                </div>`;
+                            }).join('')}
+                        </div>
+
+                        <div class="card-section-title">💡 Recommandations clés</div>
+                        <ul style="padding-left:18px;font-size:0.86em;color:#555;line-height:1.7;">
+                            ${s.sorted.slice(0,2).flatMap(c => (recommendations[c.key] || []).slice(0,2).map(r => `<li>${r}</li>`)).join('')}
+                        </ul>
+
+                        <div class="card-actions">
+                            <a href="index.html" class="btn-reload" onclick="prepareReload(${s.id})">↩ Revoir dans l'analyseur</a>
+                            <button class="btn-dl" onclick="downloadOne(${s.id})">⬇️ Télécharger</button>
+                            <button class="btn-del" onclick="deleteOne(${s.id})">🗑 Supprimer</button>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function toggleCard(id) {
+            const body = document.getElementById(`body-${id}`);
+            const chevron = document.getElementById(`chevron-${id}`);
+            const header = body.previousElementSibling;
+            const isOpen = body.classList.contains('open');
+            body.classList.toggle('open', !isOpen);
+            chevron.classList.toggle('open', !isOpen);
+            header.classList.toggle('open', !isOpen);
+        }
+
+        function filterSaved() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = allSaved.filter(s =>
+                s.name.toLowerCase().includes(q) ||
+                s.dominant.toLowerCase().includes(q) ||
+                (s.situationText || '').toLowerCase().includes(q)
+            );
+            renderSaved(filtered);
+        }
+
+        function prepareReload(id) {
+            localStorage.setItem('reloadSaved', id);
+        }
+
+        function deleteOne(id) {
+            if (!confirm('Supprimer cette analyse ?')) return;
+            allSaved = allSaved.filter(s => s.id !== id);
+            localStorage.setItem('savedAnalyses', JSON.stringify(allSaved));
+            renderSaved(allSaved);
+        }
+
+        function clearAll() {
+            if (!confirm('Effacer toutes les analyses sauvegardées ?')) return;
+            localStorage.removeItem('savedAnalyses');
+            allSaved = [];
+            renderSaved([]);
+        }
+
+        function downloadOne(id) {
+            const s = allSaved.find(x => x.id === id);
+            if (!s) return;
+            const maxScore = Math.max(...s.sorted.map(c => c.score), 1);
+            const sep  = '═══════════════════════════════════════════════════════';
+            const sep2 = '───────────────────────────────────────────────────────';
+            const lines = [
+                sep,
+                `  ${s.name.toUpperCase()}`,
+                '  ANALYSE DE COURANTS PÉDAGOGIQUES — MSP ARPIH',
+                `  Date : ${s.date}`,
+                sep,
+                '',
+                '┌─ SITUATION D\'ORIGINE ──────────────────────────────',
+                '│',
+                ...(s.situationText || '').split('\n').map(l => `│  ${l}`),
+                '│',
+                sep2,
+                '',
+                '┌─ PROFIL PÉDAGOGIQUE ───────────────────────────────',
+                '│',
+                ...s.sorted.map(c => {
+                    const pct = Math.round(c.score / maxScore * 100);
+                    const bar = '█'.repeat(Math.round(pct / 10)) + '░'.repeat(10 - Math.round(pct / 10));
+                    const name = courants[c.key]?.name || c.key;
+                    return `│  ${bar}  ${pct}%  ${name}`;
+                }),
+                '│',
+                sep2,
+                '',
+                '┌─ RECOMMANDATIONS ──────────────────────────────────',
+                '│',
+                ...s.sorted.slice(0, 3).flatMap(c => [
+                    `│  ▸ ${courants[c.key]?.name || c.key}`,
+                    ...(recommendations[c.key] || []).map(r => `│    - ${r}`),
+                    '│'
+                ]),
+                sep2,
+                '',
+                '  © 2025–2026 MARET Davie — dmaret',
+                sep
+            ];
+            const blob = new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${s.name.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function escHtml(str) {
+            return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        }
+
+        // Handle reload request from main page
+        const reloadId = localStorage.getItem('reloadSaved');
+        if (reloadId) {
+            localStorage.removeItem('reloadSaved');
+        }
+
+        loadSaved();
+    </script>
+</body>
+</html>
