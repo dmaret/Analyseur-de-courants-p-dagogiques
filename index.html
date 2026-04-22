@@ -1724,18 +1724,37 @@
         function generateSynthesisText(sorted) {
             if (!sorted.length) return [];
             const maxScore = sorted[0].score;
-            const dom = sorted.filter(c => c.score / maxScore * 100 >= 80);
-            const pres = sorted.filter(c => c.score / maxScore * 100 >= 50 && c.score / maxScore * 100 < 80);
+            const strong  = sorted.filter(c => c.score / maxScore >= 0.60);
+            const medium  = sorted.filter(c => c.score / maxScore >= 0.35 && c.score / maxScore < 0.60);
+            const low     = sorted.filter(c => c.score / maxScore <  0.35);
+            const level   = strong.length <= 1 ? 'mono' : strong.length === 2 ? 'mixed' : 'diverse';
             const para = [];
-            if (dom.length === 1) {
-                para.push(`Votre situation est principalement ancrée dans la <strong>${dom[0].data.name}</strong>.`);
-            } else if (dom.length > 1) {
-                para.push(`Vous combinez dominante les approches <strong>${dom.map(c => c.data.name).join(' et ')}</strong>.`);
+
+            if (level === 'mono') {
+                const c = strong[0] || sorted[0];
+                para.push(`Votre situation révèle une pratique <strong>centrée sur la ${c.data.name}</strong> (${Math.round(c.score / maxScore * 100)} %). Vous mobilisez principalement ce cadre de référence : ${c.data.description}`);
+                if (medium.length) {
+                    para.push(`Des éléments secondaires de <strong>${medium.map(c => c.data.name).join(' et ')}</strong> viennent compléter ponctuellement votre approche, sans constituer un ancrage principal.`);
+                }
+                para.push(`Une pratique centrée sur un seul courant peut être une force dans les situations qui demandent de la cohérence et de la constance. Pour élargir votre répertoire, vous pourriez explorer les apports de <strong>${sorted[1]?.data?.name || 'l\'approche humaniste'}</strong>, qui offre une perspective complémentaire sur l'accompagnement.`);
+
+            } else if (level === 'mixed') {
+                const [c1, c2] = strong;
+                para.push(`Votre pratique s'appuie sur une <strong>combinaison de deux courants complémentaires</strong> : la <strong>${c1.data.name}</strong> (${Math.round(c1.score / maxScore * 100)} %) et la <strong>${c2.data.name}</strong> (${Math.round(c2.score / maxScore * 100)} %). Cette articulation témoigne d'une capacité à adapter votre posture selon les besoins.`);
+                if (medium.length) {
+                    para.push(`En arrière-plan, des traces de <strong>${medium.map(c => c.data.name).join(', ')}</strong> enrichissent ponctuellement votre intervention sans en constituer le cœur.`);
+                }
+                para.push(`Une pratique mixte est souvent le signe d'une réflexivité professionnelle développée. Pour consolider cette approche, il peut être utile de clarifier dans quels contextes vous privilégiez l'un ou l'autre courant, afin d'agir avec plus d'intentionnalité pédagogique.`);
+
+            } else {
+                const names = strong.map(c => `<strong>${c.data.name}</strong>`);
+                para.push(`Votre analyse révèle une <strong>pratique particulièrement diversifiée</strong> : ${strong.length} courants pédagogiques sont fortement mobilisés — ${names.join(', ')} — ce qui témoigne d'une grande souplesse d'adaptation selon les situations et les bénéficiaires.`);
+                para.push(`${strong.map(c => `La <strong>${c.data.name}</strong> (${Math.round(c.score / maxScore * 100)} %) apporte : ${c.data.description.split('.')[0]}.`).join(' ')}`);
+                if (medium.length) {
+                    para.push(`Des approches comme <strong>${medium.map(c => c.data.name).join(', ')}</strong> sont également présentes en soutien, élargissant encore votre palette d'intervention.`);
+                }
+                para.push(`Une pratique aussi diversifiée est un atout précieux en accompagnement MSP. Le défi est d'en garder la cohérence : assurez-vous que les transitions entre courants sont lisibles pour le bénéficiaire, et que chaque choix pédagogique reste intentionnel plutôt qu'intuitif.`);
             }
-            if (pres.length) {
-                para.push(`En complémentarité, des éléments de <strong>${pres.map(c => c.data.name).join(', ')}</strong> enrichissent votre pratique.`);
-            }
-            para.push(`Cette analyse révèle une pratique professionnelle riche et adaptée. Approfondir les fondements théoriques pourrait renforcer votre efficacité et votre réflexivité pédagogique.`);
             return para;
         }
 
