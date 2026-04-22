@@ -439,6 +439,47 @@
             margin-bottom: 20px;
         }
 
+        /* Contextual synthesis under radar */
+        .contextual-synthesis {
+            margin: 20px 0 10px;
+            background: linear-gradient(135deg, #f8f9ff, #f0f4ff);
+            border-left: 4px solid #667eea;
+            border-radius: 0 12px 12px 0;
+            padding: 20px 24px;
+            font-size: 0.92em;
+            color: #3a3a3a;
+            line-height: 1.75;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        .contextual-synthesis-title {
+            font-family: 'DM Serif Display', serif;
+            color: #667eea;
+            font-size: 1em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .contextual-synthesis p { margin-bottom: 8px; }
+        .contextual-synthesis p:last-child { margin-bottom: 0; }
+
+        .ctx-kw {
+            background: #e8ecff;
+            color: #4a5adb;
+            border-radius: 4px;
+            padding: 1px 6px;
+            font-weight: 600;
+            font-size: 0.91em;
+        }
+
+        body.dark-mode .contextual-synthesis {
+            background: #0f1e40;
+            border-left-color: #4a5adb;
+            color: #d0d8f0;
+        }
+
         /* Synthesis Section */
         .synthesis-section {
             background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
@@ -1355,6 +1396,8 @@
                     <canvas id="radarCanvas" width="500" height="400"></canvas>
                 </div>
 
+                <div id="contextualSynthesisContainer"></div>
+
                 <div id="diversityBadgeContainer" style="text-align:center;"></div>
                 <div id="resultsContainer"></div>
 
@@ -1766,6 +1809,10 @@
                 try { drawRadarChart(sorted); } catch (e) { console.warn('Radar:', e); }
             });
 
+            // Contextual synthesis under radar
+            const ctxDiv = document.getElementById('contextualSynthesisContainer');
+            if (ctxDiv) ctxDiv.innerHTML = generateContextualSynthesis(sorted, situationText);
+
             // Synthesis
             const synth = document.createElement('div');
             synth.innerHTML = `
@@ -1838,6 +1885,75 @@
 
         function toggleCard(header) {
             header.classList.toggle('collapsed');
+        }
+
+        function generateContextualSynthesis(sorted, situation) {
+            if (!sorted.length || !situation) return '';
+            const maxScore = sorted[0].score;
+            const top = sorted.slice(0, 3);
+            const txt = situation.toLowerCase();
+
+            // Extract notable words from situation (nouns/verbs > 4 chars, not stopwords)
+            const stop = new Set(['dans','avec','pour','cette','votre','vous','les','des','une','que','qui','par','sur','son','ses','leur','mais','elle','comme','plus','très','bien','aussi','tout','peut','même','être','avoir','fait','lors','cela','donc','dont','nous','quand','entre','vers','sans','sous','après','avant','selon','ainsi','autre','chaque','encore','depuis','quand','alors','cette','celui','ceux']);
+            const words = situation.match(/\b[a-zàâéèêëîïôùûüç]{5,}\b/gi) || [];
+            const freq = {};
+            words.forEach(w => {
+                const lw = w.toLowerCase();
+                if (!stop.has(lw)) freq[lw] = (freq[lw] || 0) + 1;
+            });
+            const notable = Object.entries(freq).sort((a,b) => b[1]-a[1]).slice(0, 5).map(e => e[0]);
+
+            // Contextual signals per courant
+            const signals = {
+                transmissif:          ['expliqu','montr','démonstration','étape','reprodui','savoir','enseign','transmet'],
+                behaviorisme:         ['répét','encour','félicit','renforc','comportement','automatis','récompens','correction'],
+                cognitivisme_tcc:     ['pens','croyance','émotion','stratégi','résolut','cognitif','représent','bloqu'],
+                humaniste:            ['écoute','confiance','autonomi','empathi','accompagn','ressenti','besoin','sécur'],
+                systemique:           ['interact','communicat','relation','dynamiqu','groupe','équipe','pattern','tension'],
+                socioconstructivisme: ['groupe','collabor','échange','pairs','ensemble','partag','construi','collect'],
+                competences:          ['compétence','situation réelle','professionnel','valider','objectif','évaluat','transférab']
+            };
+
+            const found = {};
+            top.forEach(c => {
+                const hits = (signals[c.key] || []).filter(s => txt.includes(s));
+                if (hits.length) found[c.key] = hits.slice(0, 2);
+            });
+
+            const dom = top[0];
+            const pct = Math.round(dom.score / maxScore * 100);
+            const kw = (s) => `<span class="ctx-kw">${s}</span>`;
+
+            const paras = [];
+
+            // Para 1 — dominant courant + situation link
+            const domHits = found[dom.key];
+            if (domHits && domHits.length) {
+                paras.push(`La situation décrite fait apparaître des éléments caractéristiques de la <strong>${dom.data.name}</strong> (${pct} %) : on y retrouve notamment des traces de <em>${domHits.map(h => kw(h + '…')).join(' et ')}</em>, qui sont au cœur de ce courant.`);
+            } else {
+                paras.push(`L'analyse de votre situation révèle que la <strong>${dom.data.name}</strong> constitue le cadre de référence principal de votre intervention (${pct} %).`);
+            }
+
+            // Para 2 — notable words from situation linked to courants
+            if (notable.length) {
+                const linked = notable.slice(0, 3).map(w => kw(w)).join(', ');
+                const second = top[1];
+                if (second && found[second.key]) {
+                    const pct2 = Math.round(second.score / maxScore * 100);
+                    paras.push(`Des termes comme ${linked} dans votre description suggèrent également une dimension <strong>${second.data.name}</strong> (${pct2} %), notamment à travers ${found[second.key].map(h => kw(h + '…')).join(' et ')}.`);
+                } else {
+                    paras.push(`Votre description mobilise des thèmes comme ${linked}, qui ancrent cette situation dans un contexte d'accompagnement professionnel structuré.`);
+                }
+            }
+
+            // Para 3 — brief bridge sentence
+            const allNames = top.map(c => `<strong>${c.data.name}</strong>`).join(', ');
+            paras.push(`En croisant votre description et le profil obtenu (${allNames}), cette situation témoigne d'une posture professionnelle qui mobilise plusieurs registres pédagogiques selon les besoins du moment.`);
+
+            return `<div class="contextual-synthesis">
+                <div class="contextual-synthesis-title">🔍 Lecture croisée — situation &amp; profil</div>
+                ${paras.map(p => `<p>${p}</p>`).join('')}
+            </div>`;
         }
 
         function generateSynthesisText(sorted) {
